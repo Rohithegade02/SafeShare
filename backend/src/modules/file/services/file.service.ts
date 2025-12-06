@@ -1,8 +1,10 @@
 import { File, IFile } from '../models/file.model';
 import { AppError } from '../../../common/middleware/error.middleware';
-import fs from 'fs';
+import { DatabaseConfig } from '../../../config/database.config';
+import { Readable } from 'stream';
 import zlib from 'zlib';
 import { promisify } from 'util';
+import mongoose from 'mongoose';
 
 const gzip = promisify(zlib.gzip);
 const gunzip = promisify(zlib.gunzip);
@@ -13,21 +15,46 @@ export class FileService {
         userId: string,
         compress: boolean = false
     ): Promise<IFile> {
-        let filePath = file.path;
+        const bucket = DatabaseConfig.getGridFSBucket();
+
+        let fileBuffer = file.buffer;
         let isCompressed = false;
+        let finalSize = file.size;
 
         // Compress file if requested (bonus feature)
         if (compress) {
-            filePath = await this.compressFile(file.path);
+            fileBuffer = await gzip(fileBuffer);
             isCompressed = true;
+            finalSize = fileBuffer.length;
         }
 
+        // Upload to GridFS
+        const uploadStream = bucket.openUploadStream(file.originalname, {
+            metadata: {
+                originalName: file.originalname,
+                mimeType: file.mimetype,
+                owner: userId,
+                isCompressed,
+            },
+        });
+
+        // Convert buffer to stream and pipe to GridFS
+        const readableStream = Readable.from(fileBuffer);
+        readableStream.pipe(uploadStream);
+
+        // Wait for upload to complete
+        await new Promise((resolve, reject) => {
+            uploadStream.on('finish', resolve);
+            uploadStream.on('error', reject);
+        });
+
+        // Create file document with GridFS reference
         const fileDoc = await File.create({
-            filename: file.filename,
+            filename: file.originalname,
             originalName: file.originalname,
             mimeType: file.mimetype,
-            size: file.size,
-            path: filePath,
+            size: finalSize,
+            gridfsId: uploadStream.id,
             owner: userId,
             isCompressed,
         });
@@ -77,42 +104,50 @@ export class FileService {
             throw new AppError('Unauthorized to delete this file', 403);
         }
 
-        // Delete physical file
-        if (fs.existsSync(file.path)) {
-            fs.unlinkSync(file.path);
+        const bucket = DatabaseConfig.getGridFSBucket();
+
+        // Delete from GridFS
+        try {
+            await bucket.delete(file.gridfsId);
+        } catch (error) {
+            console.error('Error deleting from GridFS:', error);
+            // Continue to delete metadata even if GridFS delete fails
         }
 
+        // Delete metadata
         await File.findByIdAndDelete(fileId);
     }
 
-    async getFileStream(fileId: string, userId: string): Promise<{ stream: fs.ReadStream; file: IFile }> {
+    async getFileStream(fileId: string, userId: string): Promise<{ stream: Readable; file: IFile }> {
         const file = await this.getFileById(fileId, userId);
+        const bucket = DatabaseConfig.getGridFSBucket();
 
-        if (!fs.existsSync(file.path)) {
-            throw new AppError('File not found on disk', 404);
+        // Get download stream from GridFS
+        const downloadStream = bucket.openDownloadStream(file.gridfsId);
+
+        return { stream: downloadStream, file };
+    }
+
+    async getFileBuffer(fileId: string, userId: string): Promise<{ buffer: Buffer; file: IFile }> {
+        const { stream, file } = await this.getFileStream(fileId, userId);
+
+        // Convert stream to buffer
+        const chunks: Buffer[] = [];
+
+        await new Promise((resolve, reject) => {
+            stream.on('data', (chunk) => chunks.push(chunk));
+            stream.on('end', resolve);
+            stream.on('error', reject);
+        });
+
+        const buffer = Buffer.concat(chunks);
+
+        // Decompress if needed
+        if (file.isCompressed) {
+            const decompressed = await gunzip(buffer);
+            return { buffer: decompressed, file };
         }
 
-        const stream = fs.createReadStream(file.path);
-
-        return { stream, file };
-    }
-
-    private async compressFile(filePath: string): Promise<string> {
-        const fileBuffer = fs.readFileSync(filePath);
-        const compressed = await gzip(fileBuffer);
-
-        const compressedPath = filePath + '.gz';
-        fs.writeFileSync(compressedPath, compressed);
-
-        // Delete original file
-        fs.unlinkSync(filePath);
-
-        return compressedPath;
-    }
-
-    async decompressFile(filePath: string): Promise<Buffer> {
-        const compressedBuffer = fs.readFileSync(filePath);
-        const decompressed = await gunzip(compressedBuffer);
-        return decompressed;
+        return { buffer, file };
     }
 }

@@ -59,17 +59,13 @@ export class FileController {
     });
 
     downloadFile = asyncHandler(async (req: AuthRequest, res: Response) => {
-        const { stream, file } = await this.fileService.getFileStream(req.params.id, req.user!.id);
+        const { buffer, file } = await this.fileService.getFileBuffer(req.params.id, req.user!.id);
 
         res.setHeader('Content-Type', file.mimeType);
         res.setHeader('Content-Disposition', `attachment; filename="${file.originalName}"`);
+        res.setHeader('Content-Length', buffer.length);
 
-        if (file.isCompressed) {
-            const decompressed = await this.fileService.decompressFile(file.path);
-            res.send(decompressed);
-        } else {
-            stream.pipe(res);
-        }
+        res.send(buffer);
     });
 
     deleteFile = asyncHandler(async (req: AuthRequest, res: Response) => {

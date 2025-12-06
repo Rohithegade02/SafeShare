@@ -5,7 +5,7 @@ export interface IFile extends Document {
     originalName: string;
     mimeType: string;
     size: number;
-    path: string;
+    gridfsId: mongoose.Types.ObjectId; // GridFS file ID
     owner: mongoose.Types.ObjectId;
     isCompressed: boolean;
     createdAt: Date;
@@ -30,9 +30,10 @@ const FileSchema = new Schema<IFile>(
             type: Number,
             required: true,
         },
-        path: {
-            type: String,
+        gridfsId: {
+            type: Schema.Types.ObjectId,
             required: true,
+            index: true,
         },
         owner: {
             type: Schema.Types.ObjectId,
