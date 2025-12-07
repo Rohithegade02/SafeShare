@@ -1,8 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { Login, Register, Dashboard } from '@/pages';
-import { SharedContainer } from '@/pages/Shared';
-import { ShareLinkAccess } from '@/pages/ShareLinkAccess';
-import { ActivityContainer } from '@/pages/Activity';
+import { Login, Register, Dashboard, Activity, Shared, ShareLinkAccess } from '@/pages';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { PublicRoute } from '@/components/PublicRoute';
 import { useEffect } from 'react';
@@ -48,7 +45,7 @@ function App() {
           path={ROUTES.shared}
           element={
             // <ProtectedRoute>
-            <SharedContainer />
+            <Shared />
             // </ProtectedRoute>
           }
         />
@@ -64,7 +61,7 @@ function App() {
           path={ROUTES.activity}
           element={
             // <ProtectedRoute>
-            <ActivityContainer />
+            <Activity />
             // </ProtectedRoute>
           }
         />
