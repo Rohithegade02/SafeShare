@@ -9,12 +9,14 @@ interface AuthState {
     isAuthenticated: boolean;
     isLoading: boolean;
     error: string | null;
+    users: User[] | null;
 
     // Actions
     login: (credentials: LoginCredentials) => Promise<void>;
     register: (credentials: RegisterCredentials) => Promise<void>;
     logout: () => void;
     fetchProfile: () => Promise<void>;
+    fetchAllUsers: () => Promise<void>;
     clearError: () => void;
     initializeAuth: () => void;
 }
@@ -25,6 +27,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     isAuthenticated: false,
     isLoading: false,
     error: null,
+    users: null,
 
     // login actions
     login: async (credentials: LoginCredentials) => {
@@ -94,6 +97,23 @@ export const useAuthStore = create<AuthState>((set) => ({
         } catch (error: any) {
             set({
                 error: error.message || 'Failed to fetch profile',
+                isLoading: false,
+            });
+            throw error;
+        }
+    },
+    fetchAllUsers: async () => {
+        set({ isLoading: true, error: null });
+        try {
+            const users = await authService.getAllUsers();
+            set({
+                users,
+                isLoading: false,
+                error: null,
+            });
+        } catch (error: any) {
+            set({
+                error: error.message || 'Failed to fetch users',
                 isLoading: false,
             });
             throw error;

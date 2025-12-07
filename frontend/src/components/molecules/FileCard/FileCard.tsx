@@ -11,8 +11,7 @@ import type { FileCardProps } from './types';
 import { FileIcon, Download, Share2, Trash2, MoreVertical, Archive } from 'lucide-react';
 import { formatFileSize, formatDate, getFileExtension } from '@/utils/formatters';
 import { getFileTypeColor } from '@/utils/activity-helpers';
-import { Activity, useMemo } from 'react';
-import { memo } from 'react';
+import { useMemo, memo, Activity } from 'react';
 
 export const FileCard = memo(({
     file,
@@ -71,13 +70,13 @@ export const FileCard = memo(({
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                            {dropdownMenuItem.map((item) => (
-                                <Activity mode={item.mode ? 'visible' : 'hidden'}>
-                                    <DropdownMenuItem onClick={() => item.onClick?.()}>
+                            {dropdownMenuItem.map((item, index) => (
+                                item.mode && (
+                                    <DropdownMenuItem key={index} onClick={() => item.onClick?.()}>
                                         <item.icon className="mr-2 h-4 w-4" />
                                         {item.label}
                                     </DropdownMenuItem>
-                                </Activity>
+                                )
                             ))}
                         </DropdownMenuContent>
                     </DropdownMenu>

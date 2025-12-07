@@ -27,23 +27,14 @@ export interface GenerateShareLinkRequest {
     expiresIn?: number; // in hours
 }
 
-export interface ShareResponse {
-    success: boolean;
-    data: Share;
-}
+export type ShareResponse = Share;
 
 export interface ShareLinkResponse {
-    success: boolean;
-    data: {
-        shareLink: string;
-        expiresAt?: string;
-    };
+    shareLink: string;
+    expiresAt?: string;
 }
 
-export interface SharedFilesResponse {
-    success: boolean;
-    data: Share[];
-}
+export type SharedFilesResponse = Share[];
 
 export interface RevokeAccessRequest {
     fileId: string;

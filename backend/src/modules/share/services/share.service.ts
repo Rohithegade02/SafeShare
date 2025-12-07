@@ -135,14 +135,9 @@ export class ShareService {
             throw new AppError('Share link has expired', 403);
         }
 
-        // Check if user has access (owner or explicitly shared with)
-        const hasAccess =
-            share.owner.toString() === userId ||
-            share.sharedWith.some((id) => id.toString() === userId);
-
-        if (!hasAccess) {
-            throw new AppError('You do not have access to this file', 403);
-        }
+        // For share links, any authenticated user can access
+        // (Authentication is already verified by the auth middleware)
+        // No need to check if user is in sharedWith array for link-based shares
 
         return share;
     }

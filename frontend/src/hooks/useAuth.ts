@@ -21,6 +21,8 @@ export const useAuth = () => {
     const fetchProfile = useAuthStore((state) => state.fetchProfile);
     const clearError = useAuthStore((state) => state.clearError);
     const initializeAuth = useAuthStore((state) => state.initializeAuth);
+    const users = useAuthStore((state) => state.users);
+    const fetchAllUsersAction = useAuthStore((state) => state.fetchAllUsers);
 
 
     //Login handler
@@ -65,6 +67,15 @@ export const useAuth = () => {
         }
     }, [fetchProfile]);
 
+    // fetch all users
+    const fetchAllUsers = useCallback(async () => {
+        try {
+            await fetchAllUsersAction();
+        } catch (error: unknown) {
+            toast.error('Failed to fetch users');
+        }
+    }, [fetchAllUsersAction]);
+
 
     return {
         user,
@@ -76,6 +87,8 @@ export const useAuth = () => {
         logout,
         refreshProfile,
         clearError,
-        initializeAuth
+        initializeAuth,
+        users,
+        fetchAllUsers
     };
 };

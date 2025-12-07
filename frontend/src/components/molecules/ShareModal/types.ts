@@ -3,13 +3,11 @@ export interface ShareModalProps {
     fileName: string;
     isOpen: boolean;
     onClose: () => void;
-    onShareWithUsers: (userIds: string[], expiresIn?: number) => Promise<void>;
-    onGenerateLink: (expiresIn?: number) => Promise<string>;
 }
 
 export interface UseShareModalProps {
-    onShareWithUsers: (userIds: string[], expiresIn?: number) => Promise<void>;
-    onGenerateLink: (expiresIn?: number) => Promise<string>;
+    fileId: string;
+    onClose?: () => void;
 }
 
 export interface User {

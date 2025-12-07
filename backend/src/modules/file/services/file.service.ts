@@ -1,4 +1,5 @@
 import { File, IFile } from '../models/file.model';
+import { Share } from '../../share/models/share.model';
 import { AppError } from '../../../common/middleware/error.middleware';
 import { DatabaseConfig } from '../../../config/database.config';
 import { Readable } from 'stream';
@@ -85,9 +86,38 @@ export class FileService {
             throw new AppError('File not found', 404);
         }
 
-        // Check if user has access (will be enhanced by share service)
-        if (file.owner.toString() !== userId) {
-            throw new AppError('Unauthorized access to file', 403);
+        console.log('getFileById - file:', file, 'userId:', userId);
+        // Check if user has access (owner OR shared with user OR valid share link)
+        const isOwner = file.owner.toString() === userId;
+
+        if (!isOwner) {
+            // Check if file is shared with this user OR has a valid share link
+            const share = await Share.findOne({
+                file: fileId,
+                $and: [
+                    {
+                        $or: [
+                            { sharedWith: userId }, // Shared directly with user
+                            {
+                                shareLink: { $exists: true, $ne: null } // Has a share link (any authenticated user can access)
+                            }
+                        ]
+                    },
+                    {
+                        $or: [
+                            { expiresAt: { $exists: false } }, // No expiry
+                            { expiresAt: null }, // No expiry
+                            { expiresAt: { $gt: new Date() } } // Not expired
+                        ]
+                    }
+                ]
+            });
+
+            console.log('Share found:', share);
+
+            if (!share) {
+                throw new AppError('Unauthorized access to file', 403);
+            }
         }
 
         return file;

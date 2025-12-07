@@ -17,6 +17,7 @@ export const DashboardPresentation = memo(({
     onFileUpload,
     onFileDownload,
     onFileDelete,
+    onFileShare,
     onFileView,
     onRefresh,
     onLogout,
@@ -41,6 +42,7 @@ export const DashboardPresentation = memo(({
                 onFileUpload={onFileUpload}
                 onFileDownload={onFileDownload}
                 onFileDelete={onFileDelete}
+                onFileShare={onFileShare}
                 onFileView={onFileView}
             />
         </div>

@@ -17,7 +17,7 @@ import {
     SelectValue,
 } from '@/components/atoms/select';
 import type { ShareModalProps } from './types';
-import { Users, Link2, Copy, Check } from 'lucide-react';
+import { Copy, Check } from 'lucide-react';
 import { UserSelector } from '../UserSelector';
 import { useShareModal } from './useShareModal';
 
@@ -26,32 +26,28 @@ export const ShareModal = ({
     fileName,
     isOpen,
     onClose,
-    onShareWithUsers,
-    onGenerateLink,
 }: ShareModalProps) => {
-    const { selectedUsers, setSelectedUsers, expiryTime, setExpiryTime, shareLink, copied, loading, handleShareWithUsers, handleGenerateLink, copyToClipboard } = useShareModal({
-        onShareWithUsers,
-        onGenerateLink,
+    const { users, expiryTime, setExpiryTime, shareLink, copied, loading, handleShareWithUsers, handleGenerateLink, copyToClipboard } = useShareModal({
+        fileId,
+        onClose,
     });
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-[550px]">
                 <DialogHeader>
-                    <DialogTitle>Share File</DialogTitle>
+                    <DialogTitle>Share "{fileName}"</DialogTitle>
                     <DialogDescription>
-                        Share "{fileName}" with other users or generate a shareable link
+                        Share this file with other users or generate a shareable link
                     </DialogDescription>
                 </DialogHeader>
 
-                <Tabs defaultValue="users" className="mt-4">
+                <Tabs defaultValue="users" className="w-full">
                     <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="users" className="gap-2">
-                            <Users className="h-4 w-4" />
+                        <TabsTrigger value="users">
                             Share with Users
                         </TabsTrigger>
-                        <TabsTrigger value="link" className="gap-2">
-                            <Link2 className="h-4 w-4" />
+                        <TabsTrigger value="link">
                             Share via Link
                         </TabsTrigger>
                     </TabsList>
@@ -60,8 +56,7 @@ export const ShareModal = ({
                         <div className="space-y-2">
                             <Label>Select Users</Label>
                             <UserSelector
-                                selectedUsers={selectedUsers}
-                                onSelectionChange={setSelectedUsers}
+                                users={users || []}
                             />
                         </div>
 
@@ -72,24 +67,22 @@ export const ShareModal = ({
                                     <SelectValue placeholder="Never expires" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="">Never expires</SelectItem>
+                                    <SelectItem value="never">Never expires</SelectItem>
                                     <SelectItem value="1">1 hour</SelectItem>
                                     <SelectItem value="24">24 hours</SelectItem>
                                     <SelectItem value="168">7 days</SelectItem>
                                     <SelectItem value="720">30 days</SelectItem>
                                 </SelectContent>
                             </Select>
-                            <p className="text-xs text-muted-foreground">
-                                🎁 Bonus Feature: Set expiration time for shares
-                            </p>
+
                         </div>
 
                         <Button
                             onClick={handleShareWithUsers}
-                            disabled={selectedUsers.length === 0 || loading}
+                            disabled={users?.length === 0 || loading}
                             className="w-full"
                         >
-                            {loading ? 'Sharing...' : `Share with ${selectedUsers.length} user(s)`}
+                            {loading ? 'Sharing...' : `Share with ${users?.length} user(s)`}
                         </Button>
                     </TabsContent>
 
@@ -101,16 +94,13 @@ export const ShareModal = ({
                                     <SelectValue placeholder="Never expires" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="">Never expires</SelectItem>
+                                    <SelectItem value="never">Never expires</SelectItem>
                                     <SelectItem value="1">1 hour</SelectItem>
                                     <SelectItem value="24">24 hours</SelectItem>
                                     <SelectItem value="168">7 days</SelectItem>
                                     <SelectItem value="720">30 days</SelectItem>
                                 </SelectContent>
                             </Select>
-                            <p className="text-xs text-muted-foreground">
-                                🎁 Bonus Feature: Set expiration time for links
-                            </p>
                         </div>
 
                         {!shareLink ? (

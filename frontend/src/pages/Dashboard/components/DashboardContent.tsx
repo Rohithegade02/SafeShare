@@ -9,6 +9,7 @@ export const DashboardContent = memo(({
     onFileUpload,
     onFileDownload,
     onFileDelete,
+    onFileShare,
     onFileView,
 }: DashboardContentProps) => {
     return (
@@ -26,6 +27,7 @@ export const DashboardContent = memo(({
                 files={files}
                 loading={isLoading}
                 onFileClick={onFileView}
+                onShare={onFileShare}
                 onDownload={onFileDownload}
                 onDelete={onFileDelete}
                 emptyMessage="Upload your first file to get started"

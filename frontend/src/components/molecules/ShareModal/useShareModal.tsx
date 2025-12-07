@@ -1,34 +1,45 @@
-// hook for share modal
+import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
+import { useShare } from '@/hooks/useShare';
+import { type UseShareModalProps } from './types';
+import { useAuth } from '@/hooks/useAuth';
+import type { User } from '@/types';
 
-import { useState } from "react";
-import { toast } from "sonner";
-import type { UseShareModalProps } from "./types";
-
-export const useShareModal = ({
-    onShareWithUsers,
-    onGenerateLink,
-}: UseShareModalProps) => {
-    const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
-    const [expiryTime, setExpiryTime] = useState<string>('');
+export const useShareModal = ({ fileId, onClose }: UseShareModalProps) => {
+    const [expiryTime, setExpiryTime] = useState<string>('never');
     const [shareLink, setShareLink] = useState<string>('');
     const [copied, setCopied] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    const { users, fetchAllUsers } = useAuth();
+    const { shareWithUsers: shareWithUsersAction, generateShareLink: generateLinkAction } = useShare();
+
+    // Fetch users when modal opens
+    useEffect(() => {
+        fetchAllUsers();
+    }, [fetchAllUsers]);
+
     const handleShareWithUsers = async () => {
-        if (selectedUsers.length === 0) {
+        if (!users || users.length === 0) {
             toast.error('Please select at least one user');
             return;
         }
 
         setLoading(true);
         try {
-            const expiresIn = expiryTime ? parseInt(expiryTime) : undefined;
-            await onShareWithUsers(selectedUsers, expiresIn);
-            toast.success(`File shared with ${selectedUsers.length} user(s)`);
-            setSelectedUsers([]);
-            setExpiryTime('');
+            const expiresIn = expiryTime && expiryTime !== 'never' ? parseInt(expiryTime) : undefined;
+            await shareWithUsersAction({
+                fileId,
+                userIds: users.map((user: User) => user.id),
+                expiresIn,
+            });
+            setExpiryTime('never');
+            // Close modal after successful share
+            if (onClose) {
+                setTimeout(() => onClose(), 1000);
+            }
         } catch (error) {
-            toast.error('Failed to share file');
+            // Error already handled in useShare hook
         } finally {
             setLoading(false);
         }
@@ -37,12 +48,17 @@ export const useShareModal = ({
     const handleGenerateLink = async () => {
         setLoading(true);
         try {
-            const expiresIn = expiryTime ? parseInt(expiryTime) : undefined;
-            const link = await onGenerateLink(expiresIn);
-            setShareLink(link);
-            toast.success('Share link generated');
+            const expiresIn = expiryTime && expiryTime !== 'never' ? parseInt(expiryTime) : undefined;
+            const response = await generateLinkAction({
+                fileId,
+                expiresIn,
+            });
+
+            // Construct full URL for the share link
+            const fullLink = `${window.location.origin}/shared/link/${response.shareLink}`;
+            setShareLink(fullLink);
         } catch (error) {
-            toast.error('Failed to generate link');
+            // Error already handled in useShare hook
         } finally {
             setLoading(false);
         }
@@ -56,8 +72,7 @@ export const useShareModal = ({
     };
 
     return {
-        selectedUsers,
-        setSelectedUsers,
+        users,
         expiryTime,
         setExpiryTime,
         shareLink,
@@ -67,4 +82,4 @@ export const useShareModal = ({
         handleGenerateLink,
         copyToClipboard,
     };
-}
+};

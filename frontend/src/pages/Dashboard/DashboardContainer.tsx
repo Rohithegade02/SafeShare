@@ -2,14 +2,14 @@ import { useState, useCallback, useMemo, memo, useRef } from 'react';
 import { useFiles } from '@/hooks/useFiles';
 import { useAuth } from '@/hooks/useAuth';
 import { DashboardPresentation } from './DashboardPresentation';
+import { ShareModal } from '@/components/molecules/ShareModal';
 
 /**
  * Dashboard Container - Handles business logic and state
  */
 export const DashboardContainer = memo(() => {
     const { user, logout } = useAuth();
-    const renderRef = useRef(0)
-    console.log("render", renderRef.current++)
+
     const {
         files,
         isLoading,
@@ -22,6 +22,8 @@ export const DashboardContainer = memo(() => {
     } = useFiles();
 
     const [searchQuery, setSearchQuery] = useState<string>('');
+    const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+    const [selectedFileForShare, setSelectedFileForShare] = useState<{ id: string; name: string } | null>(null);
 
     // Filter files based on search query
     const filteredFiles = useMemo(() => files.filter((file) =>
@@ -74,6 +76,18 @@ export const DashboardContainer = memo(() => {
         [deleteFile, files]
     );
 
+    // Handle file share
+    const handleFileShare = useCallback(
+        (fileId: string) => {
+            const file = files.find((f) => f._id === fileId);
+            if (file) {
+                setSelectedFileForShare({ id: file._id, name: file.originalName });
+                setIsShareModalOpen(true);
+            }
+        },
+        [files]
+    );
+
     // Handle file view (placeholder for future implementation)
     const handleFileView = useCallback((fileId: string) => {
         console.log('View file:', fileId);
@@ -89,21 +103,39 @@ export const DashboardContainer = memo(() => {
         }
     }, [fetchFiles]);
 
+    // Handle share modal close
+    const handleShareModalClose = useCallback(() => {
+        setIsShareModalOpen(false);
+        setSelectedFileForShare(null);
+    }, []);
+
     return (
-        <DashboardPresentation
-            user={user}
-            files={filteredFiles}
-            isLoading={isLoading}
-            isUploading={isUploading}
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            onFileUpload={handleFileUpload}
-            onFileDownload={handleFileDownload}
-            onFileDelete={handleFileDelete}
-            onFileView={handleFileView}
-            onRefresh={handleRefresh}
-            onLogout={logout}
-        />
+        <>
+            <DashboardPresentation
+                user={user}
+                files={filteredFiles}
+                isLoading={isLoading}
+                isUploading={isUploading}
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+                onFileUpload={handleFileUpload}
+                onFileDownload={handleFileDownload}
+                onFileDelete={handleFileDelete}
+                onFileShare={handleFileShare}
+                onFileView={handleFileView}
+                onRefresh={handleRefresh}
+                onLogout={logout}
+            />
+
+            {selectedFileForShare && (
+                <ShareModal
+                    fileId={selectedFileForShare.id}
+                    fileName={selectedFileForShare.name}
+                    isOpen={isShareModalOpen}
+                    onClose={handleShareModalClose}
+                />
+            )}
+        </>
     );
 });
 

@@ -1,10 +1,6 @@
+import type { User } from "@/types";
+
 export interface UserSelectorProps {
-    selectedUsers: string[];
-    onSelectionChange: (userIds: string[]) => void;
+    users: User[];
 }
 
-export interface User {
-    id: string;
-    username: string;
-    email: string;
-}

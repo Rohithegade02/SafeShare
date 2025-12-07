@@ -19,6 +19,7 @@ export interface DashboardPresentationProps {
     onFileUpload: (files: globalThis.File[], compress: boolean) => Promise<void>;
     onFileDownload: (fileId: string) => void;
     onFileDelete: (fileId: string) => void;
+    onFileShare: (fileId: string) => void;
     onFileView: (fileId: string) => void;
     onRefresh: () => Promise<void>;
     onLogout: () => void;
@@ -31,5 +32,6 @@ export interface DashboardContentProps {
     onFileUpload: (files: globalThis.File[], compress: boolean) => Promise<void>;
     onFileDownload: (fileId: string) => void;
     onFileDelete: (fileId: string) => void;
+    onFileShare: (fileId: string) => void;
     onFileView: (fileId: string) => void;
 }

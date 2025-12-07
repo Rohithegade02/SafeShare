@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Login, Register, Dashboard } from '@/pages';
+import { SharedContainer } from '@/pages/Shared';
+import { ShareLinkAccess } from '@/pages/ShareLinkAccess';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { PublicRoute } from '@/components/PublicRoute';
 import { useEffect } from 'react';
@@ -39,6 +41,22 @@ function App() {
             <ProtectedRoute>
               <Dashboard />
             </ProtectedRoute>
+          }
+        />
+        <Route
+          path={ROUTES.shared}
+          element={
+            // <ProtectedRoute>
+            <SharedContainer />
+            // {/* </ProtectedRoute> */}
+          }
+        />
+        <Route
+          path={ROUTES.shareLink}
+          element={
+            // <ProtectedRoute>
+            <ShareLinkAccess />
+            // </ProtectedRoute>
           }
         />
         <Route path={ROUTES.home} element={<Navigate to={ROUTES.dashboard} replace />} />

@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { Button } from '@/components/atoms/button';
 import {
     Command,
@@ -17,39 +16,23 @@ import {
 } from '@/components/atoms/popover';
 import { Avatar, AvatarFallback } from '@/components/atoms/avatar';
 import { Badge } from '@/components/atoms/badge';
-import type { UserSelectorProps, User } from './types';
+import type { UserSelectorProps } from './types';
 import { getInitials } from '@/utils/formatters';
 
-// Mock users - replace with actual API call
-const mockUsers: User[] = [
-    { id: '1', username: 'john_doe', email: 'john@example.com' },
-    { id: '2', username: 'jane_smith', email: 'jane@example.com' },
-    { id: '3', username: 'bob_wilson', email: 'bob@example.com' },
-    { id: '4', username: 'alice_brown', email: 'alice@example.com' },
-];
 
 export const UserSelector = ({
-    selectedUsers,
-    onSelectionChange,
+    users,
 }: UserSelectorProps) => {
     const [open, setOpen] = useState(false);
-    const [users, setUsers] = useState<User[]>([]);
 
-    useEffect(() => {
-        // TODO: Replace with actual API call
-        setUsers(mockUsers);
-    }, []);
+    // Ensure users is always an array
+    const userList = users || [];
+    console.log(users);
 
     const toggleUser = (userId: string) => {
-        const newSelection = selectedUsers.includes(userId)
-            ? selectedUsers.filter(id => id !== userId)
-            : [...selectedUsers, userId];
-        onSelectionChange(newSelection);
+        // TODO: Implement user selection toggle if needed
+        console.log('Toggle user:', userId);
     };
-
-    const selectedUserObjects = users.filter(user =>
-        selectedUsers.includes(user.id)
-    );
 
     return (
         <div className="space-y-2">
@@ -61,9 +44,9 @@ export const UserSelector = ({
                         aria-expanded={open}
                         className="w-full justify-between"
                     >
-                        {selectedUsers.length === 0
+                        {userList.length === 0
                             ? 'Select users...'
-                            : `${selectedUsers.length} user(s) selected`}
+                            : `${userList.length} user(s) selected`}
                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                 </PopoverTrigger>
@@ -73,7 +56,7 @@ export const UserSelector = ({
                         <CommandList>
                             <CommandEmpty>No users found.</CommandEmpty>
                             <CommandGroup>
-                                {users.map((user) => (
+                                {userList.map((user) => (
                                     <CommandItem
                                         key={user.id}
                                         value={user.email}
@@ -94,12 +77,7 @@ export const UserSelector = ({
                                                 </p>
                                             </div>
                                             <Check
-                                                className={cn(
-                                                    'h-4 w-4',
-                                                    selectedUsers.includes(user.id)
-                                                        ? 'opacity-100'
-                                                        : 'opacity-0'
-                                                )}
+                                                className="h-4 w-4 opacity-100"
                                             />
                                         </div>
                                     </CommandItem>
@@ -110,9 +88,9 @@ export const UserSelector = ({
                 </PopoverContent>
             </Popover>
 
-            {selectedUserObjects.length > 0 && (
+            {userList.length > 0 && (
                 <div className="flex flex-wrap gap-2">
-                    {selectedUserObjects.map((user) => (
+                    {userList.map((user) => (
                         <Badge
                             key={user.id}
                             variant="secondary"
