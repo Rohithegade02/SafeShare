@@ -3,14 +3,12 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { DatabaseConfig } from './config/database.config';
 import { errorHandler } from './common/middleware/error.middleware';
-
-// Import modules
 import { AuthModule } from './modules/auth/auth.module';
 import { FileModule } from './modules/file/file.module';
 import { ShareModule } from './modules/share/share.module';
 import { AuditModule } from './modules/audit/audit.module';
 
-// Load environment variables
+
 dotenv.config();
 
 class App {
@@ -27,19 +25,14 @@ class App {
     }
 
     private initializeMiddlewares(): void {
-        // CORS
         this.app.use(
             cors({
                 origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
                 credentials: true,
             })
         );
-
-        // Body parsers
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
-
-        // Request logging
         this.app.use((req, res, next) => {
             console.log(`${req.method} ${req.path}`);
             next();
@@ -77,20 +70,10 @@ class App {
 
     public async start(): Promise<void> {
         try {
-            // Connect to database
             await DatabaseConfig.connect();
 
-            // Start server
             this.app.listen(this.port, () => {
-                console.log(`\n🚀 SafeShare API Server`);
-                console.log(`📡 Server running on http://localhost:${this.port}`);
-                console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-                console.log(`\n📚 Available Services:`);
-                console.log(`   - Auth Service:  /api/auth`);
-                console.log(`   - File Service:  /api/files`);
-                console.log(`   - Share Service: /api/share`);
-                console.log(`   - Audit Service: /api/audit`);
-                console.log(`\n All systems operational\n`);
+                console.log(`Server running on http://localhost:${this.port}`);
             });
         } catch (error) {
             console.error(' Failed to start server:', error);
@@ -99,7 +82,6 @@ class App {
     }
 }
 
-// Start the application
 const application = new App();
 application.start();
 

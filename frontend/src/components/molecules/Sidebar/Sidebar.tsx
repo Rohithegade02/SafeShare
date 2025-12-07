@@ -48,7 +48,7 @@ export const Sidebar = ({
     ], []);
 
     return (
-        <aside className="w-64 border-r bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <aside className="w-64 border-r bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
             <div className="flex h-full flex-col gap-2 py-4">
                 <div className="flex-1 px-3">
                     <nav className="space-y-1">
