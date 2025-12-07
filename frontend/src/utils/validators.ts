@@ -44,9 +44,8 @@ export const isValidPassword = (password: string): {
  * Validate username
  */
 export const isValidUsername = (username: string): boolean => {
-    // Username must be 3-20 characters, alphanumeric and underscores only
-    const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
-    return usernameRegex.test(username);
+    // check user name is more than 3 characters and less than 20 characters
+    return username.length >= 3 && username.length <= 20;
 };
 
 /**

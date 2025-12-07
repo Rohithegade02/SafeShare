@@ -35,9 +35,7 @@ export const RegisterPresentation = ({
             <Card className="w-full max-w-md">
                 <CardHeader className="space-y-1 text-center">
                     <div className="flex justify-center mb-4">
-                        <div className="p-3 rounded-full bg-primary/10">
-                            <FileText className="h-8 w-8 text-primary" />
-                        </div>
+                        <p className="text-2xl font-bold">SafeShare</p>
                     </div>
                     <CardTitle className="text-2xl font-bold">Create an account</CardTitle>
                     <CardDescription>
@@ -61,7 +59,7 @@ export const RegisterPresentation = ({
                                 <Input
                                     id="username"
                                     type="text"
-                                    placeholder="john_doe"
+                                    placeholder="user name"
                                     value={username}
                                     onChange={(e) => {
                                         onUsernameChange(e.target.value);
@@ -80,7 +78,7 @@ export const RegisterPresentation = ({
                                 <p className="text-xs text-destructive">{usernameError}</p>
                             ) : (
                                 <p className="text-xs text-muted-foreground">
-                                    3-20 characters, letters, numbers, and underscores only
+                                    Username must be 3-20 characters long
                                 </p>
                             )}
                         </div>
@@ -92,7 +90,7 @@ export const RegisterPresentation = ({
                                 <Input
                                     id="email"
                                     type="email"
-                                    placeholder="john@example.com"
+                                    placeholder="email@example.com"
                                     value={email}
                                     onChange={(e) => {
                                         onEmailChange(e.target.value);
@@ -163,7 +161,7 @@ export const RegisterPresentation = ({
                         </div>
                     </CardContent>
 
-                    <CardFooter className="flex flex-col space-y-4">
+                    <CardFooter className="flex mt-4 flex-col space-y-4">
                         <Button
                             type="submit"
                             className="w-full"
