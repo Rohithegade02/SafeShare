@@ -2,8 +2,8 @@
  * File Types
  */
 export interface File {
-    _id: string;  // MongoDB ID from backend
-    id?: string;  // Optional for backward compatibility
+    _id: string;
+    id?: string;
     filename: string;
     originalName: string;
     mimeType: string;
@@ -13,6 +13,14 @@ export interface File {
     isCompressed: boolean;
     createdAt: string;
     updatedAt: string;
+}
+
+/**
+ * Shared File - includes file data + share metadata
+ */
+export interface SharedFile extends File {
+    sharedAt: string;
+    shareId: string;
 }
 
 export interface FileUploadRequest {

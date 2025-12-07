@@ -27,7 +27,19 @@ export const ShareModal = ({
     isOpen,
     onClose,
 }: ShareModalProps) => {
-    const { users, expiryTime, setExpiryTime, shareLink, copied, loading, handleShareWithUsers, handleGenerateLink, copyToClipboard } = useShareModal({
+    const {
+        users,
+        selectedUserIds,
+        expiryTime,
+        setExpiryTime,
+        shareLink,
+        copied,
+        loading,
+        handleUserSelectionChange,
+        handleShareWithUsers,
+        handleGenerateLink,
+        copyToClipboard
+    } = useShareModal({
         fileId,
         onClose,
     });
@@ -57,6 +69,7 @@ export const ShareModal = ({
                             <Label>Select Users</Label>
                             <UserSelector
                                 users={users || []}
+                                onSelectionChange={handleUserSelectionChange}
                             />
                         </div>
 
@@ -79,10 +92,10 @@ export const ShareModal = ({
 
                         <Button
                             onClick={handleShareWithUsers}
-                            disabled={users?.length === 0 || loading}
+                            disabled={loading || selectedUserIds.length === 0}
                             className="w-full"
                         >
-                            {loading ? 'Sharing...' : `Share with ${users?.length} user(s)`}
+                            {loading ? 'Sharing...' : 'Share with Selected Users'}
                         </Button>
                     </TabsContent>
 

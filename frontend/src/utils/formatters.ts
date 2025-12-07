@@ -11,6 +11,7 @@ export const formatFileSize = (bytes: number): string => {
 
 /**
  * Format date to relative time (e.g., "2 hours ago", "Yesterday")
+ * Uses Indian Standard Time (IST)
  */
 export const formatRelativeTime = (dateString: string): string => {
     const date = new Date(dateString);
@@ -26,11 +27,19 @@ export const formatRelativeTime = (dateString: string): string => {
     if (diffDays === 0) return 'Today';
     if (diffDays === 1) return 'Yesterday';
     if (diffDays < 7) return `${diffDays} days ago`;
-    return date.toLocaleDateString();
+
+    // Format in IST
+    return date.toLocaleDateString('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+    });
 };
 
 /**
  * Format date to simple readable format
+ * Uses Indian Standard Time (IST)
  */
 export const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
@@ -41,7 +50,31 @@ export const formatDate = (dateString: string): string => {
     if (diffDays === 0) return 'Today';
     if (diffDays === 1) return 'Yesterday';
     if (diffDays < 7) return `${diffDays} days ago`;
-    return date.toLocaleDateString();
+
+    // Format in IST
+    return date.toLocaleDateString('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+    });
+};
+
+/**
+ * Format date with time in IST
+ */
+export const formatDateTime = (dateString: string): string => {
+    const date = new Date(dateString);
+
+    return date.toLocaleString('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    });
 };
 
 /**

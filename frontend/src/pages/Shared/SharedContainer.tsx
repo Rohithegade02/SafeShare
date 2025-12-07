@@ -2,6 +2,7 @@ import { useEffect, useCallback } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useShare } from '@/hooks/useShare';
 import { useFiles } from '@/hooks/useFiles';
+import { useFileView } from '@/hooks/useFileView';
 import { SharedPresentation } from './SharedPresentation';
 
 /**
@@ -11,6 +12,10 @@ export const SharedContainer = () => {
     const { user, logout } = useAuth();
     const { localSharedFiles, sharedFilesLoading, fetchSharedFiles } = useShare();
     const { downloadFile } = useFiles();
+    const { viewFile } = useFileView();
+
+    console.log('SharedContainer RENDER - localSharedFiles:', localSharedFiles);
+    console.log('SharedContainer RENDER - length:', localSharedFiles?.length);
 
     // Fetch shared files on mount
     useEffect(() => {
@@ -33,11 +38,16 @@ export const SharedContainer = () => {
         [downloadFile, localSharedFiles]
     );
 
-    // Handle file view
-    const handleFileView = useCallback((fileId: string) => {
-        console.log('View shared file:', fileId);
-        // TODO: Implement file details view
-    }, []);
+
+    // Handle file view - uses authenticated file viewing
+    const handleFileView = useCallback(
+        async (fileId: string) => {
+            await viewFile(fileId);
+        },
+        [viewFile]
+    );
+
+
 
     return (
         <SharedPresentation

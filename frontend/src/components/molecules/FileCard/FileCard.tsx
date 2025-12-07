@@ -8,8 +8,8 @@ import {
     DropdownMenuTrigger,
 } from '@/components/atoms/dropdown-menu';
 import type { FileCardProps } from './types';
-import { FileIcon, Download, Share2, Trash2, MoreVertical, Archive } from 'lucide-react';
-import { formatFileSize, formatDate, getFileExtension } from '@/utils/formatters';
+import { FileIcon, Download, Share2, Trash2, MoreVertical, Archive, Eye } from 'lucide-react';
+import { formatFileSize, formatDate, getFileExtension, formatRelativeTime } from '@/utils/formatters';
 import { getFileTypeColor } from '@/utils/activity-helpers';
 import { useMemo, memo, Activity } from 'react';
 
@@ -22,6 +22,12 @@ export const FileCard = memo(({
 }: FileCardProps) => {
     const dropdownMenuItem = useMemo(() => {
         return [
+            {
+                label: "View",
+                onClick: () => onView?.(file._id),
+                icon: Eye,
+                mode: onView
+            },
             {
                 label: "Download",
                 onClick: () => onDownload?.(file._id),
@@ -41,7 +47,7 @@ export const FileCard = memo(({
                 mode: onDelete
             },
         ]
-    }, [onDownload, onShare, onDelete])
+    }, [onView, onDownload, onShare, onDelete, file._id])
     return (
         <Card className="hover:shadow-lg transition-shadow duration-200">
             <CardHeader className="pb-3">
@@ -59,7 +65,7 @@ export const FileCard = memo(({
                                 {file.originalName}
                             </h3>
                             <p className="text-xs text-muted-foreground">
-                                {formatFileSize(file.size)} • {formatDate(file.createdAt)}
+                                {formatFileSize(file.size)} • {formatRelativeTime(file.sharedAt || file.createdAt)}
                             </p>
                         </div>
                     </div>

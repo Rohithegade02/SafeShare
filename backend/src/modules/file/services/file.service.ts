@@ -86,7 +86,6 @@ export class FileService {
             throw new AppError('File not found', 404);
         }
 
-        console.log('getFileById - file:', file, 'userId:', userId);
         // Check if user has access (owner OR shared with user OR valid share link)
         const isOwner = file.owner.toString() === userId;
 
@@ -113,7 +112,6 @@ export class FileService {
                 ]
             });
 
-            console.log('Share found:', share);
 
             if (!share) {
                 throw new AppError('Unauthorized access to file', 403);

@@ -9,7 +9,6 @@ import React, { Activity } from 'react';
 
 export const ActivityItem = ({ activity }: ActivityItemProps) => {
     const IconComponent = getActionIcon(activity.action);
-    console.log(activity);
 
     return (
         <Card className="p-4">

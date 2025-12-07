@@ -1,15 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
 import { useShare } from '@/hooks/useShare';
 import { type UseShareModalProps } from './types';
 import { useAuth } from '@/hooks/useAuth';
-import type { User } from '@/types';
 
 export const useShareModal = ({ fileId, onClose }: UseShareModalProps) => {
     const [expiryTime, setExpiryTime] = useState<string>('never');
     const [shareLink, setShareLink] = useState<string>('');
     const [copied, setCopied] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
 
     const { users, fetchAllUsers } = useAuth();
     const { shareWithUsers: shareWithUsersAction, generateShareLink: generateLinkAction } = useShare();
@@ -19,8 +19,12 @@ export const useShareModal = ({ fileId, onClose }: UseShareModalProps) => {
         fetchAllUsers();
     }, [fetchAllUsers]);
 
-    const handleShareWithUsers = async () => {
-        if (!users || users.length === 0) {
+    const handleUserSelectionChange = useCallback((userIds: string[]) => {
+        setSelectedUserIds(userIds);
+    }, []);
+
+    const handleShareWithUsers = useCallback(async () => {
+        if (!selectedUserIds || selectedUserIds.length === 0) {
             toast.error('Please select at least one user');
             return;
         }
@@ -30,10 +34,11 @@ export const useShareModal = ({ fileId, onClose }: UseShareModalProps) => {
             const expiresIn = expiryTime && expiryTime !== 'never' ? parseInt(expiryTime) : undefined;
             await shareWithUsersAction({
                 fileId,
-                userIds: users.map((user: User) => user.id),
+                userIds: selectedUserIds,
                 expiresIn,
             });
             setExpiryTime('never');
+            setSelectedUserIds([]); // Reset selection
             // Close modal after successful share
             if (onClose) {
                 setTimeout(() => onClose(), 1000);
@@ -43,9 +48,9 @@ export const useShareModal = ({ fileId, onClose }: UseShareModalProps) => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [selectedUserIds, expiryTime, fileId, onClose, shareWithUsersAction]);
 
-    const handleGenerateLink = async () => {
+    const handleGenerateLink = useCallback(async () => {
         setLoading(true);
         try {
             const expiresIn = expiryTime && expiryTime !== 'never' ? parseInt(expiryTime) : undefined;
@@ -62,22 +67,24 @@ export const useShareModal = ({ fileId, onClose }: UseShareModalProps) => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [expiryTime, fileId, generateLinkAction]);
 
-    const copyToClipboard = () => {
+    const copyToClipboard = useCallback(() => {
         navigator.clipboard.writeText(shareLink);
         setCopied(true);
         toast.success('Link copied to clipboard');
         setTimeout(() => setCopied(false), 2000);
-    };
+    }, [shareLink]);
 
     return {
         users,
+        selectedUserIds,
         expiryTime,
         setExpiryTime,
         shareLink,
         copied,
         loading,
+        handleUserSelectionChange,
         handleShareWithUsers,
         handleGenerateLink,
         copyToClipboard,

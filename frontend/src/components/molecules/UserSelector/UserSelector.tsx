@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Check, ChevronsUpDown } from 'lucide-react';
+import { useCallback, useMemo, useState } from 'react';
+import { Check, ChevronsUpDown, X } from 'lucide-react';
 import { Button } from '@/components/atoms/button';
 import {
     Command,
@@ -22,17 +22,30 @@ import { getInitials } from '@/utils/formatters';
 
 export const UserSelector = ({
     users,
+    onSelectionChange,
 }: UserSelectorProps) => {
     const [open, setOpen] = useState(false);
+    const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
 
     // Ensure users is always an array
     const userList = users || [];
-    console.log(users);
 
-    const toggleUser = (userId: string) => {
-        // TODO: Implement user selection toggle if needed
-        console.log('Toggle user:', userId);
-    };
+    const toggleUser = useCallback((userId: string) => {
+        setSelectedUserIds((prev) => {
+            const newSelection = prev.includes(userId)
+                ? prev.filter((id) => id !== userId) // Remove if already selected
+                : [...prev, userId]; // Add if not selected
+
+            // Notify parent component of selection change
+            onSelectionChange?.(newSelection);
+
+            return newSelection;
+        });
+    }, []);
+
+    const isUserSelected = (userId: string) => selectedUserIds.includes(userId);
+
+    const selectedUsers = useMemo(() => userList.filter((user) => isUserSelected(user.id)), [userList, selectedUserIds]);
 
     return (
         <div className="space-y-2">
@@ -44,9 +57,9 @@ export const UserSelector = ({
                         aria-expanded={open}
                         className="w-full justify-between"
                     >
-                        {userList.length === 0
+                        {selectedUserIds.length === 0
                             ? 'Select users...'
-                            : `${userList.length} user(s) selected`}
+                            : `${selectedUserIds.length} user(s) selected`}
                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
                 </PopoverTrigger>
@@ -77,7 +90,10 @@ export const UserSelector = ({
                                                 </p>
                                             </div>
                                             <Check
-                                                className="h-4 w-4 opacity-100"
+                                                className={`h-4 w-4 ${isUserSelected(user.id)
+                                                    ? 'opacity-100'
+                                                    : 'opacity-0'
+                                                    }`}
                                             />
                                         </div>
                                     </CommandItem>
@@ -88,9 +104,9 @@ export const UserSelector = ({
                 </PopoverContent>
             </Popover>
 
-            {userList.length > 0 && (
+            {selectedUsers.length > 0 && (
                 <div className="flex flex-wrap gap-2">
-                    {userList.map((user) => (
+                    {selectedUsers.map((user) => (
                         <Badge
                             key={user.id}
                             variant="secondary"
@@ -106,7 +122,7 @@ export const UserSelector = ({
                                 onClick={() => toggleUser(user.id)}
                                 className="ml-1 hover:bg-muted rounded-full p-0.5"
                             >
-                                ×
+                                <X className="h-3 w-3" />
                             </button>
                         </Badge>
                     ))}

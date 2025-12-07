@@ -7,6 +7,7 @@ export interface FileCardProps {
         size: number;
         isCompressed: boolean;
         createdAt: string;
+        sharedAt?: string; // Optional: when the file was shared (for shared files)
     };
     onShare?: (fileId: string) => void;
     onDownload?: (fileId: string) => void;

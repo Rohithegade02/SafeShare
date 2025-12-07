@@ -7,14 +7,14 @@ import type {
     GenerateShareLinkRequest,
     RevokeAccessRequest,
 } from '@/types/share.types';
-import type { File } from '@/types/file.types';
+import type { SharedFile } from '@/types/file.types';
 
 /**
  * Custom hook for file sharing operations
  */
 export const useShare = () => {
     // Use local state for shared files to avoid Zustand reactivity issues with React 19
-    const [localSharedFiles, setLocalSharedFiles] = useState<File[]>([]);
+    const [localSharedFiles, setLocalSharedFiles] = useState<SharedFile[]>([]);
 
     // Use a single selector to get all state at once
     const store = useShareStore();
@@ -76,18 +76,23 @@ export const useShare = () => {
         setSharedFilesError(null);
         try {
             const shares = await shareService.getSharedFiles();
-            // Extract files from shares
-            const files = shares.map((share) => {
-                if (typeof share.file === 'object') {
-                    return share.file;
-                }
-                // If file is just an ID, we need to handle this case
-                // For now, we'll skip these
-                return null;
-            }).filter(Boolean);
 
-            setSharedWithMeFiles(files as any[]);
-            setLocalSharedFiles(files as File[]); // Update local state
+            // Create SharedFile objects with both file data and share metadata
+            const sharedFiles: SharedFile[] = shares
+                .map((share) => {
+                    if (typeof share.file === 'object' && share.file !== null) {
+                        return {
+                            ...share.file,
+                            sharedAt: share.createdAt, // When it was shared
+                            shareId: share.id, // Share document ID
+                        };
+                    }
+                    return null;
+                })
+                .filter((file): file is SharedFile => file !== null);
+
+            setSharedWithMeFiles(sharedFiles as any[]);
+            setLocalSharedFiles(sharedFiles);
         } catch (error) {
             const message = error instanceof Error ? error.message : 'Failed to fetch shared files';
             setSharedFilesError(message);

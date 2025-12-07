@@ -1,8 +1,10 @@
-import { useState, useCallback, useMemo, memo, useRef } from 'react';
+import { useState, useCallback, useMemo, memo } from 'react';
 import { useFiles } from '@/hooks/useFiles';
 import { useAuth } from '@/hooks/useAuth';
+import { useFileView } from '@/hooks/useFileView';
 import { DashboardPresentation } from './DashboardPresentation';
 import { ShareModal } from '@/components/molecules/ShareModal';
+import React from 'react';
 
 /**
  * Dashboard Container - Handles business logic and state
@@ -20,6 +22,7 @@ export const DashboardContainer = memo(() => {
         deleteFile,
         fetchFiles,
     } = useFiles();
+    const { viewFile } = useFileView();
 
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
@@ -88,11 +91,13 @@ export const DashboardContainer = memo(() => {
         [files]
     );
 
-    // Handle file view (placeholder for future implementation)
-    const handleFileView = useCallback((fileId: string) => {
-        console.log('View file:', fileId);
-        // TODO: Implement file details view
-    }, []);
+    // Handle file view - uses authenticated file viewing
+    const handleFileView = useCallback(
+        async (fileId: string) => {
+            await viewFile(fileId);
+        },
+        [viewFile]
+    );
 
     // Handle refresh
     const handleRefresh = useCallback(async () => {
@@ -110,7 +115,7 @@ export const DashboardContainer = memo(() => {
     }, []);
 
     return (
-        <>
+        <React.Fragment>
             <DashboardPresentation
                 user={user}
                 files={filteredFiles}
@@ -135,7 +140,7 @@ export const DashboardContainer = memo(() => {
                     onClose={handleShareModalClose}
                 />
             )}
-        </>
+        </React.Fragment>
     );
 });
 
