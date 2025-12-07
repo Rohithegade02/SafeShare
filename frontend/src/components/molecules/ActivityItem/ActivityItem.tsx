@@ -5,7 +5,7 @@ import { Icon } from '@/components/atoms/icon';
 import { type ActivityItemProps } from './types';
 import { getActionIcon, getActionColor, getActionText } from '@/utils/activity-helpers';
 import { formatRelativeTime, getInitials } from '@/utils/formatters';
-import React, { Activity } from 'react';
+
 
 export const ActivityItem = ({ activity }: ActivityItemProps) => {
     const IconComponent = getActionIcon(activity.action);
@@ -28,15 +28,22 @@ export const ActivityItem = ({ activity }: ActivityItemProps) => {
                                 <span className="text-muted-foreground">
                                     {getActionText(activity.action)}
                                 </span>
-                                <Activity mode={activity.file ? 'visible' : 'hidden'}>
-                                    <span className="font-medium">{activity.file!.name}</span>
-                                </Activity>
-                                <Activity mode={activity.targetUser ? 'visible' : 'hidden'}>
-                                    <React.Fragment>
+                                {activity.file && (
+                                    <>
+                                        {' '}
+                                        <span className="font-medium">{activity.file.originalName}</span>
+                                    </>
+                                )}
+                                {activity.metadata?.sharedWith && activity.metadata.sharedWith.length > 0 && (
+                                    <>
                                         {' with '}
-                                        <span className="font-medium">{activity.targetUser!.username}</span>
-                                    </React.Fragment>
-                                </Activity>
+                                        <span className="font-medium">
+                                            {activity.metadata.sharedWith.length === 1
+                                                ? '1 user'
+                                                : `${activity.metadata.sharedWith.length} users`}
+                                        </span>
+                                    </>
+                                )}
 
                             </p>
                             <p className="text-xs text-muted-foreground mt-1">

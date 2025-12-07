@@ -2,9 +2,12 @@ import { Response } from 'express';
 import { ShareProvider } from '../providers/share.provider';
 import { asyncHandler } from '../../../common/middleware/error.middleware';
 import { AuthRequest } from '../../../common/interfaces/request.interface';
+import { AuditProvider } from '../../audit/providers/audit.provider';
+import { AuditAction } from '../../audit/models/audit-log.model';
 
 export class ShareController {
     private shareService = ShareProvider.getShareService();
+    private auditService = AuditProvider.getAuditService();
 
     shareWithUsers = asyncHandler(async (req: AuthRequest, res: Response) => {
         const { fileId, userIds, expiresIn } = req.body;
@@ -14,6 +17,17 @@ export class ShareController {
             req.user!.id,
             userIds,
             expiresIn
+        );
+
+        // Log audit activity
+        await this.auditService.logActivity(
+            req.user!.id,
+            AuditAction.SHARE_CREATE,
+            fileId,
+            undefined,
+            { sharedWith: userIds, shareType: 'user', expiresIn },
+            req.ip,
+            req.get('user-agent')
         );
 
         res.status(200).json({
@@ -29,6 +43,17 @@ export class ShareController {
             fileId,
             req.user!.id,
             expiresIn
+        );
+
+        // Log audit activity
+        await this.auditService.logActivity(
+            req.user!.id,
+            AuditAction.SHARE_CREATE,
+            fileId,
+            undefined,
+            { shareType: 'link', expiresIn },
+            req.ip,
+            req.get('user-agent')
         );
 
         res.status(200).json({
@@ -66,6 +91,17 @@ export class ShareController {
 
         const share = await this.shareService.accessFileByLink(shareLink, req.user!.id);
 
+        // Log audit activity
+        await this.auditService.logActivity(
+            req.user!.id,
+            AuditAction.SHARE_ACCESS,
+            share.file._id.toString(),
+            undefined,
+            { shareLink },
+            req.ip,
+            req.get('user-agent')
+        );
+
         res.status(200).json({
             success: true,
             data: share,
@@ -77,6 +113,17 @@ export class ShareController {
 
         await this.shareService.revokeAccess(fileId, req.user!.id, userIds);
 
+        // Log audit activity
+        await this.auditService.logActivity(
+            req.user!.id,
+            AuditAction.SHARE_REVOKE,
+            fileId,
+            undefined,
+            { revokedUsers: userIds },
+            req.ip,
+            req.get('user-agent')
+        );
+
         res.status(200).json({
             success: true,
             message: 'Access revoked successfully',
@@ -84,7 +131,19 @@ export class ShareController {
     });
 
     deleteShare = asyncHandler(async (req: AuthRequest, res: Response) => {
-        await this.shareService.deleteShare(req.params.fileId, req.user!.id);
+        const fileId = req.params.fileId;
+        await this.shareService.deleteShare(fileId, req.user!.id);
+
+        // Log audit activity
+        await this.auditService.logActivity(
+            req.user!.id,
+            AuditAction.SHARE_REVOKE,
+            fileId,
+            undefined,
+            { action: 'delete_all_shares' },
+            req.ip,
+            req.get('user-agent')
+        );
 
         res.status(200).json({
             success: true,

@@ -5,5 +5,6 @@ export const ROUTES = {
     dashboard: '/dashboard',
     shared: '/shared',
     shareLink: '/shared/link/:shareLink',
+    activity: '/audit',
     home: '/',
 }
