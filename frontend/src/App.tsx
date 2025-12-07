@@ -2,16 +2,17 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Login, Register, Dashboard } from '@/pages';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { PublicRoute } from '@/components/PublicRoute';
-import { useAuthStore } from '@/store/authStore';
 import { useEffect } from 'react';
 import { ROUTES } from './route';
+import { useAuthStore } from '@/store/authStore';
 
 function App() {
-  const { initializeAuth } = useAuthStore();
+  const initializeAuth = useAuthStore((state) => state.initializeAuth);
 
   useEffect(() => {
     initializeAuth();
-  }, [initializeAuth]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Run only once on mount
 
   return (
     <BrowserRouter>

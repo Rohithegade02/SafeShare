@@ -16,8 +16,9 @@ import type { UploadButtonProps } from './types';
 import { Upload, FileUp, X } from 'lucide-react';
 import { formatFileSize } from '@/utils';
 import { useUploadButton } from './useUploadButton';
+import { memo } from 'react';
 
-export const UploadButton = ({
+export const UploadButton = memo(({
     onUpload,
     multiple = false,
     maxSize = 50 * 1024 * 1024, // 50MB
@@ -133,4 +134,6 @@ export const UploadButton = ({
             </DialogContent>
         </Dialog>
     );
-};
+});
+
+UploadButton.displayName = 'UploadButton';

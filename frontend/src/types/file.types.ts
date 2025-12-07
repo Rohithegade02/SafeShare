@@ -2,7 +2,8 @@
  * File Types
  */
 export interface File {
-    id: string;
+    _id: string;  // MongoDB ID from backend
+    id?: string;  // Optional for backward compatibility
     filename: string;
     originalName: string;
     mimeType: string;

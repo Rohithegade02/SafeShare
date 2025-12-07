@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
 import type { LoginCredentials, RegisterCredentials } from '@/types';
@@ -9,23 +9,19 @@ import { toast } from 'sonner';
  */
 export const useAuth = () => {
     const navigate = useNavigate();
-    const {
-        user,
-        isAuthenticated,
-        isLoading,
-        error,
-        login: loginAction,
-        register: registerAction,
-        logout: logoutAction,
-        fetchProfile,
-        clearError,
-        initializeAuth,
-    } = useAuthStore();
 
+    // Use selectors to prevent unnecessary re-renders
+    const user = useAuthStore((state) => state.user);
+    const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+    const isLoading = useAuthStore((state) => state.isLoading);
+    const error = useAuthStore((state) => state.error);
+    const loginAction = useAuthStore((state) => state.login);
+    const registerAction = useAuthStore((state) => state.register);
+    const logoutAction = useAuthStore((state) => state.logout);
+    const fetchProfile = useAuthStore((state) => state.fetchProfile);
+    const clearError = useAuthStore((state) => state.clearError);
+    const initializeAuth = useAuthStore((state) => state.initializeAuth);
 
-    useEffect(() => {
-        initializeAuth();
-    }, [initializeAuth]);
 
     //Login handler
     const login = useCallback(async (credentials: LoginCredentials) => {
@@ -69,6 +65,7 @@ export const useAuth = () => {
         }
     }, [fetchProfile]);
 
+
     return {
         user,
         isAuthenticated,
@@ -79,5 +76,6 @@ export const useAuth = () => {
         logout,
         refreshProfile,
         clearError,
+        initializeAuth
     };
 };

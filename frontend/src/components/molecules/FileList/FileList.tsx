@@ -2,8 +2,9 @@ import { FileCard } from '../FileCard';
 import { Skeleton } from '@/components/atoms/skeleton';
 import type { FileListProps } from './types';
 import { FileX } from 'lucide-react';
+import { memo } from 'react';
 
-export const FileList = ({
+export const FileList = memo(({
     files,
     loading = false,
     onFileClick,
@@ -38,7 +39,7 @@ export const FileList = ({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {files.map((file) => (
                 <FileCard
-                    key={file.id}
+                    key={file._id}
                     file={file}
                     onView={onFileClick}
                     onShare={onShare}
@@ -48,4 +49,6 @@ export const FileList = ({
             ))}
         </div>
     );
-};
+});
+
+FileList.displayName = 'FileList';

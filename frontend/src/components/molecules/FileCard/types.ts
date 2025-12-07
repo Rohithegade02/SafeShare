@@ -1,6 +1,6 @@
 export interface FileCardProps {
     file: {
-        id: string;
+        _id: string;
         filename: string;
         originalName: string;
         mimeType: string;

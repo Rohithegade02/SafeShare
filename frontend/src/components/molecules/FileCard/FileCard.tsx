@@ -12,8 +12,9 @@ import { FileIcon, Download, Share2, Trash2, MoreVertical, Archive } from 'lucid
 import { formatFileSize, formatDate, getFileExtension } from '@/utils/formatters';
 import { getFileTypeColor } from '@/utils/activity-helpers';
 import { Activity, useMemo } from 'react';
+import { memo } from 'react';
 
-export const FileCard = ({
+export const FileCard = memo(({
     file,
     onShare,
     onDownload,
@@ -24,19 +25,19 @@ export const FileCard = ({
         return [
             {
                 label: "Download",
-                onClick: () => onDownload?.(file.id),
+                onClick: () => onDownload?.(file._id),
                 icon: Download,
                 mode: onDownload
             },
             {
                 label: "Share",
-                onClick: () => onShare?.(file.id),
+                onClick: () => onShare?.(file._id),
                 icon: Share2,
                 mode: onShare
             },
             {
                 label: "Delete",
-                onClick: () => onDelete?.(file.id),
+                onClick: () => onDelete?.(file._id),
                 icon: Trash2,
                 mode: onDelete
             },
@@ -53,7 +54,7 @@ export const FileCard = ({
                         <div className="flex-1 min-w-0">
                             <h3
                                 className="font-semibold text-sm truncate cursor-pointer hover:text-primary"
-                                onClick={() => onView?.(file.id)}
+                                onClick={() => onView?.(file._id)}
                                 title={file.originalName}
                             >
                                 {file.originalName}
@@ -102,7 +103,7 @@ export const FileCard = ({
                             variant="outline"
                             size="sm"
                             className="flex-1"
-                            onClick={() => onDownload?.(file.id)}
+                            onClick={() => onDownload?.(file._id)}
                         >
                             <Download className="mr-2 h-4 w-4" />
                             Download
@@ -113,7 +114,7 @@ export const FileCard = ({
                             variant="default"
                             size="sm"
                             className="flex-1"
-                            onClick={() => onShare?.(file.id)}
+                            onClick={() => onShare?.(file._id)}
                         >
                             <Share2 className="mr-2 h-4 w-4" />
                             Share
@@ -123,4 +124,6 @@ export const FileCard = ({
             </CardFooter>
         </Card>
     );
-};
+});
+
+FileCard.displayName = 'FileCard';

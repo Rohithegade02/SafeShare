@@ -1,13 +1,7 @@
+import type { File } from "@/types";
+
 export interface FileListProps {
-    files: Array<{
-        id: string;
-        filename: string;
-        originalName: string;
-        mimeType: string;
-        size: number;
-        isCompressed: boolean;
-        createdAt: string;
-    }>;
+    files: File[]
     loading?: boolean;
     onFileClick?: (fileId: string) => void;
     onShare?: (fileId: string) => void;
