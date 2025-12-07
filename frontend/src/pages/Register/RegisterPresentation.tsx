@@ -3,12 +3,13 @@ import { Input } from '@/components/atoms/input';
 import { Button } from '@/components/atoms/button';
 import { Label } from '@/components/atoms/label';
 import { Alert, AlertDescription } from '@/components/atoms/alert';
-import { FileText, Mail, Lock, User, AlertCircle } from 'lucide-react';
+import { Mail, Lock, User, AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import type { RegisterPresentationProps } from './types';
+import { memo } from 'react';
 
 
-export const RegisterPresentation = ({
+export const RegisterPresentation = memo(({
     username,
     email,
     password,
@@ -184,4 +185,4 @@ export const RegisterPresentation = ({
             </Card>
         </div>
     );
-};
+});

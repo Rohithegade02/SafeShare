@@ -3,18 +3,23 @@ import { Input } from '@/components/atoms/input';
 import { Button } from '@/components/atoms/button';
 import { Label } from '@/components/atoms/label';
 import { Alert, AlertDescription } from '@/components/atoms/alert';
-import { FileText, Mail, Lock, AlertCircle } from 'lucide-react';
+import { Mail, Lock, AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import type { LoginPresentationProps } from './types';
+import { memo } from 'react';
 
 
-export const LoginPresentation = ({
+export const LoginPresentation = memo(({
     email,
     password,
     isLoading,
     error,
+    emailError,
+    passwordError,
     onEmailChange,
     onPasswordChange,
+    onEmailBlur,
+    onPasswordBlur,
     onSubmit,
     onClearError,
 }: LoginPresentationProps) => {
@@ -53,11 +58,15 @@ export const LoginPresentation = ({
                                         onEmailChange(e.target.value);
                                         if (error) onClearError();
                                     }}
+                                    onBlur={onEmailBlur}
                                     className="pl-10"
                                     required
                                     disabled={isLoading}
                                 />
                             </div>
+                            {emailError && (
+                                <p className="text-sm text-destructive">{emailError}</p>
+                            )}
                         </div>
 
                         <div className="space-y-2">
@@ -73,15 +82,19 @@ export const LoginPresentation = ({
                                         onPasswordChange(e.target.value);
                                         if (error) onClearError();
                                     }}
+                                    onBlur={onPasswordBlur}
                                     className="pl-10"
                                     required
                                     disabled={isLoading}
                                 />
                             </div>
+                            {passwordError && (
+                                <p className="text-sm text-destructive">{passwordError}</p>
+                            )}
                         </div>
                     </CardContent>
 
-                    <CardFooter className="flex flex-col space-y-4">
+                    <CardFooter className="flex mt-4 flex-col space-y-4">
                         <Button
                             type="submit"
                             className="w-full"
@@ -104,4 +117,6 @@ export const LoginPresentation = ({
             </Card>
         </div>
     );
-};
+});
+
+LoginPresentation.displayName = 'LoginPresentation';

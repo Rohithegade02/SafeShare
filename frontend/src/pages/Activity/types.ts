@@ -12,12 +12,13 @@ export interface ActivityPresentationProps {
     onRefresh: () => Promise<void>;
 }
 
-export interface ActivityListProps {
-    activities: Activity[];
-    loading: boolean;
-}
 
 export interface ActivityStatsProps {
     stats: ActivityStats | null;
+    loading: boolean;
+}
+
+export interface ActivityListProps {
+    myActivity: Activity[];
     loading: boolean;
 }

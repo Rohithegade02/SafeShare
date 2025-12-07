@@ -24,7 +24,6 @@ export const DashboardPresentation = memo(({
 }: DashboardPresentationProps) => {
     return (
         <div className="min-h-screen bg-background">
-            {/* Header */}
             <DashboardHeader
                 user={user}
                 searchQuery={searchQuery}
@@ -33,8 +32,6 @@ export const DashboardPresentation = memo(({
                 isLoading={isLoading}
                 onLogout={onLogout}
             />
-
-            {/* Main Content */}
             <DashboardContent
                 files={files}
                 isLoading={isLoading}

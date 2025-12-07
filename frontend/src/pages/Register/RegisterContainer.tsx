@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { memo, useState, type FormEvent } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { RegisterPresentation } from './RegisterPresentation';
 import type { RegisterCredentials } from '@/types';
@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 
 
 
-export const RegisterContainer = () => {
+export const RegisterContainer = memo(() => {
     const [form, setForm] = useState<FormState>({
         username: '',
         email: '',
@@ -43,7 +43,7 @@ export const RegisterContainer = () => {
         switch (field) {
             case 'username':
                 if (!isValidUsername(form.username)) {
-                    fieldError = 'Invalid username format (3-20 chars, alphanumeric + underscore)';
+                    fieldError = 'Invalid username format (3-20 chars)';
                 }
                 break;
 
@@ -155,4 +155,4 @@ export const RegisterContainer = () => {
             onClearError={clearError}
         />
     );
-};
+});

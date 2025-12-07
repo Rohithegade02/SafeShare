@@ -3,7 +3,4 @@ export * from './FileList';
 export * from './UploadButton';
 export * from './ShareModal';
 export * from './ActivityItem';
-export * from './Navbar';
-export * from './Sidebar';
-export * from './LoadingSpinner';
 export * from './ErrorMessage';
