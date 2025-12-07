@@ -1,17 +1,17 @@
 import { Input } from "@/components/atoms/input"
 import { Search, RefreshCw, UserIcon, LogOut } from "lucide-react"
-import type { DashboardHeaderProps } from "../types"
 import { Button } from "@/components/atoms/button"
 import { memo } from "react"
+import type { HeaderProps } from "./types";
 
-export const DashboardHeader = memo(({
+export const Header = memo(({
     user,
     searchQuery,
     onSearchChange,
     onRefresh,
     isLoading,
     onLogout,
-}: DashboardHeaderProps) => {
+}: HeaderProps) => {
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
             <div className="container flex h-16 items-center justify-between px-4">
@@ -47,4 +47,4 @@ export const DashboardHeader = memo(({
     )
 });
 
-DashboardHeader.displayName = 'DashboardHeader';
+Header.displayName = 'Header';

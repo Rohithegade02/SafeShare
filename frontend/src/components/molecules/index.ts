@@ -4,3 +4,4 @@ export * from './UploadButton';
 export * from './ShareModal';
 export * from './ActivityItem';
 export * from './ErrorMessage';
+export * from './Header';

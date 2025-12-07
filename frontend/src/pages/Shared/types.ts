@@ -8,3 +8,10 @@ export interface SharedPresentationProps {
     onFileView: (fileId: string) => void;
     onLogout: () => void;
 }
+
+export interface SharedContentProps {
+    sharedFiles: File[];
+    isLoading: boolean;
+    onFileView: (fileId: string) => void;
+    onFileDownload: (fileId: string) => void;
+}

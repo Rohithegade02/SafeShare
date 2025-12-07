@@ -14,14 +14,10 @@ export const SharedContainer = () => {
     const { downloadFile } = useFiles();
     const { viewFile } = useFileView();
 
-    console.log('SharedContainer RENDER - localSharedFiles:', localSharedFiles);
-    console.log('SharedContainer RENDER - length:', localSharedFiles?.length);
-
     // Fetch shared files on mount
     useEffect(() => {
         fetchSharedFiles();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []); // Only run once on mount
+    }, []);
 
     // Handle file download
     const handleFileDownload = useCallback(
@@ -38,8 +34,7 @@ export const SharedContainer = () => {
         [downloadFile, localSharedFiles]
     );
 
-
-    // Handle file view - uses authenticated file viewing
+    // Handle file view
     const handleFileView = useCallback(
         async (fileId: string) => {
             await viewFile(fileId);

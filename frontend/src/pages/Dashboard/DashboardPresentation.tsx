@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { DashboardHeader } from './components/DashboardHeader';
+import { Header } from '../../components/molecules';
 import type { DashboardPresentationProps } from './types';
 import { DashboardContent } from './components/DashboardContent';
 
@@ -24,7 +24,7 @@ export const DashboardPresentation = memo(({
 }: DashboardPresentationProps) => {
     return (
         <div className="min-h-screen bg-background">
-            <DashboardHeader
+            <Header
                 user={user}
                 searchQuery={searchQuery}
                 onSearchChange={onSearchChange}

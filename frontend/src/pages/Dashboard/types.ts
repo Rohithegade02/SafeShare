@@ -1,13 +1,6 @@
 import type { File, User } from "@/types";
 
-export interface DashboardHeaderProps {
-    user: User | null;
-    searchQuery: string;
-    onSearchChange: (query: string) => void;
-    onRefresh: () => Promise<void>;
-    isLoading: boolean;
-    onLogout: () => void;
-}
+
 
 export interface DashboardPresentationProps {
     user: User | null;

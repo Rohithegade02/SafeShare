@@ -1,8 +1,8 @@
 import type { ActivityPresentationProps } from './types';
-import { DashboardHeader } from '../Dashboard/components/DashboardHeader';
 import { ActivityList } from './components/ActivityList';
 import { ActivityStats } from './components/ActivityStats';
 import { ActivityHeader } from './components/ActivityHeader';
+import { Header } from '@/components/molecules';
 
 export const ActivityPresentation = ({
     user,
@@ -14,7 +14,7 @@ export const ActivityPresentation = ({
 }: ActivityPresentationProps) => {
     return (
         <div className="min-h-screen bg-background">
-            <DashboardHeader
+            <Header
                 user={user}
                 searchQuery=""
                 onSearchChange={() => { }}
