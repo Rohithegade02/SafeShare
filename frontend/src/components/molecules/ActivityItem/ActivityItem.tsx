@@ -1,12 +1,16 @@
 import { Card } from '@/components/atoms/card';
 import { Badge } from '@/components/atoms/badge';
 import { Avatar, AvatarFallback } from '@/components/atoms/avatar';
-import type { ActivityItemProps } from './types';
+import { Icon } from '@/components/atoms/icon';
+import { type ActivityItemProps } from './types';
 import { getActionIcon, getActionColor, getActionText } from '@/utils/activity-helpers';
 import { formatRelativeTime, getInitials } from '@/utils/formatters';
 import React, { Activity } from 'react';
 
 export const ActivityItem = ({ activity }: ActivityItemProps) => {
+    const IconComponent = getActionIcon(activity.action);
+    console.log(activity);
+
     return (
         <Card className="p-4">
             <div className="flex items-start gap-3">
@@ -45,8 +49,7 @@ export const ActivityItem = ({ activity }: ActivityItemProps) => {
                             variant="secondary"
                             className={`gap-1 ${getActionColor(activity.action)}`}
                         >
-                            {/* TODO : ICON Needs to be added here */}
-                            {/* <Icon name={getActionIcon(activity.action)} /> */}
+                            {IconComponent && <Icon icon={IconComponent} className="h-3 w-3" />}
                             <span className="text-xs capitalize">
                                 {activity.action.split('_')[0].toLowerCase()}
                             </span>
