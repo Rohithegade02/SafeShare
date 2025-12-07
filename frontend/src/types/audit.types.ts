@@ -27,14 +27,6 @@ export interface AuditLogsResponse {
     data: AuditLog[];
 }
 
-export interface ActivityStats {
-    totalUploads: number;
-    totalDownloads: number;
-    totalShares: number;
-    totalDeletes: number;
-    recentActivity: AuditLog[];
-}
-
 export interface ActivityStatsResponse {
     success: boolean;
     data: ActivityStats;
@@ -46,4 +38,34 @@ export interface AuditLogQueryParams {
     action?: ActivityAction;
     startDate?: string;
     endDate?: string;
+}
+
+
+export interface Activity {
+    _id: string;
+    user: {
+        _id: string;
+        username: string;
+        email: string;
+    };
+    action: 'FILE_UPLOAD' | 'FILE_DOWNLOAD' | 'FILE_DELETE' | 'SHARE_CREATE' | 'SHARE_ACCESS' | 'SHARE_REVOKE';
+    file?: {
+        _id: string;
+        filename: string;
+        originalName: string;
+    };
+    metadata?: {
+        sharedWith?: string[];
+        shareType?: 'user' | 'link';
+        ipAddress?: string;
+    };
+    createdAt: string;
+}
+
+export interface ActivityStats {
+    totalUploads: number;
+    totalDownloads: number;
+    totalShares: number;
+    totalDeletes: number;
+    recentActivity: Activity[];
 }

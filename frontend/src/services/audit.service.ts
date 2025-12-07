@@ -1,36 +1,5 @@
 import { api } from './api';
-
-/**
- * Activity/Audit Log Types
- */
-export interface Activity {
-    _id: string;
-    user: {
-        _id: string;
-        username: string;
-        email: string;
-    };
-    action: 'FILE_UPLOAD' | 'FILE_DOWNLOAD' | 'FILE_DELETE' | 'SHARE_CREATE' | 'SHARE_ACCESS' | 'SHARE_REVOKE';
-    file?: {
-        _id: string;
-        filename: string;
-        originalName: string;
-    };
-    metadata?: {
-        sharedWith?: string[];
-        shareType?: 'user' | 'link';
-        ipAddress?: string;
-    };
-    createdAt: string;
-}
-
-export interface ActivityStats {
-    totalUploads: number;
-    totalDownloads: number;
-    totalShares: number;
-    totalDeletes: number;
-    recentActivity: Activity[];
-}
+import type { Activity, ActivityStats } from '@/types/audit.types';
 
 /**
  * Get current user's activity log

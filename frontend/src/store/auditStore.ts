@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Activity, ActivityStats } from '@/services/audit.service';
+import type { Activity, ActivityStats } from '@/types/audit.types';
 
 interface AuditState {
     // Activity data

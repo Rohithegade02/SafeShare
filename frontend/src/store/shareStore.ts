@@ -7,8 +7,6 @@ interface ShareState {
     sharedWithMeFiles: File[];
     sharedFilesLoading: boolean;
     sharedFilesError: string | null;
-
-    // Current file shares (for modal)
     currentFileShares: Share | null;
     currentSharesLoading: boolean;
 
@@ -30,10 +28,7 @@ export const useShareStore = create<ShareState>((set) => ({
     currentSharesLoading: false,
 
     // Actions
-    setSharedWithMeFiles: (files) => {
-        // Create a new array reference to ensure React detects the change
-        set({ sharedWithMeFiles: [...files] });
-    },
+    setSharedWithMeFiles: (files) => set({ sharedWithMeFiles: [...files] }),
     setSharedFilesLoading: (loading) => set({ sharedFilesLoading: loading }),
     setSharedFilesError: (error) => set({ sharedFilesError: error }),
     setCurrentFileShares: (shares) => set({ currentFileShares: shares }),
