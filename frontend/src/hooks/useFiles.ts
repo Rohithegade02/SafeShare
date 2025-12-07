@@ -105,6 +105,7 @@ export const useFiles = () => {
             try {
                 await deleteFileAction(id);
                 toast.success(`${filename} deleted successfully!`);
+                fetchFiles();
             } catch (error: unknown) {
                 const message = error instanceof Error ? error.message : 'Failed to delete file';
                 toast.error(message);

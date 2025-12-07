@@ -1,8 +1,7 @@
 import { memo } from 'react';
-import { FileList } from '@/components/molecules/FileList';
-import { UploadButton } from '@/components/molecules/UploadButton';
 import { DashboardHeader } from './components/DashboardHeader';
 import type { DashboardPresentationProps } from './types';
+import { DashboardContent } from './components/DashboardContent';
 
 
 /**
@@ -35,25 +34,15 @@ export const DashboardPresentation = memo(({
             />
 
             {/* Main Content */}
-            <main className="container px-4 py-6">
-                <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-4">
-                        <UploadButton
-                            onUpload={onFileUpload}
-                            multiple={true}
-                            disabled={isUploading}
-                        />
-                    </div>
-                </div>
-                <FileList
-                    files={files}
-                    loading={isLoading}
-                    onFileClick={onFileView}
-                    onDownload={onFileDownload}
-                    onDelete={onFileDelete}
-                    emptyMessage="Upload your first file to get started"
-                />
-            </main>
+            <DashboardContent
+                files={files}
+                isLoading={isLoading}
+                isUploading={isUploading}
+                onFileUpload={onFileUpload}
+                onFileDownload={onFileDownload}
+                onFileDelete={onFileDelete}
+                onFileView={onFileView}
+            />
         </div>
     );
 });

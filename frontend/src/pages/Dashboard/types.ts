@@ -23,3 +23,13 @@ export interface DashboardPresentationProps {
     onRefresh: () => Promise<void>;
     onLogout: () => void;
 }
+
+export interface DashboardContentProps {
+    files: File[];
+    isLoading: boolean;
+    isUploading: boolean;
+    onFileUpload: (files: globalThis.File[], compress: boolean) => Promise<void>;
+    onFileDownload: (fileId: string) => void;
+    onFileDelete: (fileId: string) => void;
+    onFileView: (fileId: string) => void;
+}
