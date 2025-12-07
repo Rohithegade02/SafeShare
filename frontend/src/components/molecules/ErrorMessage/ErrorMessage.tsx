@@ -2,8 +2,9 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/atoms/alert';
 import { Button } from '@/components/atoms/button';
 import type { ErrorMessageProps } from './types';
 import { AlertCircle, RefreshCw } from 'lucide-react';
+import { memo } from 'react';
 
-export const ErrorMessage = ({
+export const ErrorMessage = memo(({
     title = 'Error',
     message,
     onRetry,
@@ -28,4 +29,5 @@ export const ErrorMessage = ({
             </AlertDescription>
         </Alert>
     );
-};
+});
+ErrorMessage.displayName = 'ErrorMessage';

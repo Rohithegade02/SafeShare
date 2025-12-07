@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useState } from 'react';
 import { Check, ChevronsUpDown, X } from 'lucide-react';
 import { Button } from '@/components/atoms/button';
 import {
@@ -20,23 +20,21 @@ import type { UserSelectorProps } from './types';
 import { getInitials } from '@/utils/formatters';
 
 
-export const UserSelector = ({
+export const UserSelector = memo(({
     users,
     onSelectionChange,
 }: UserSelectorProps) => {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState<boolean>(false);
     const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
 
-    // Ensure users is always an array
     const userList = users || [];
 
     const toggleUser = useCallback((userId: string) => {
         setSelectedUserIds((prev) => {
             const newSelection = prev.includes(userId)
-                ? prev.filter((id) => id !== userId) // Remove if already selected
-                : [...prev, userId]; // Add if not selected
+                ? prev.filter((id) => id !== userId)
+                : [...prev, userId];
 
-            // Notify parent component of selection change
             onSelectionChange?.(newSelection);
 
             return newSelection;
@@ -130,4 +128,5 @@ export const UserSelector = ({
             )}
         </div>
     );
-};
+});
+UserSelector.displayName = 'UserSelector';

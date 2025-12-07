@@ -5,9 +5,10 @@ import { Icon } from '@/components/atoms/icon';
 import { type ActivityItemProps } from './types';
 import { getActionIcon, getActionColor, getActionText } from '@/utils/activity-helpers';
 import { formatRelativeTime, getInitials } from '@/utils/formatters';
+import { memo } from 'react';
 
 
-export const ActivityItem = ({ activity }: ActivityItemProps) => {
+export const ActivityItem = memo(({ activity }: ActivityItemProps) => {
     const IconComponent = getActionIcon(activity.action);
 
     return (
@@ -65,4 +66,6 @@ export const ActivityItem = ({ activity }: ActivityItemProps) => {
             </div>
         </Card>
     );
-};
+});
+
+ActivityItem.displayName = 'ActivityItem';

@@ -20,6 +20,7 @@ import type { ShareModalProps } from './types';
 import { Copy, Check } from 'lucide-react';
 import { UserSelector } from '../UserSelector';
 import { useShareModal } from './useShareModal';
+import { EXPIRY_OPTIONS } from '@/lib/constants';
 
 export const ShareModal = ({
     fileId,
@@ -80,11 +81,11 @@ export const ShareModal = ({
                                     <SelectValue placeholder="Never expires" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="never">Never expires</SelectItem>
-                                    <SelectItem value="1">1 hour</SelectItem>
-                                    <SelectItem value="24">24 hours</SelectItem>
-                                    <SelectItem value="168">7 days</SelectItem>
-                                    <SelectItem value="720">30 days</SelectItem>
+                                    {EXPIRY_OPTIONS.map((option) => (
+                                        <SelectItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </SelectItem>
+                                    ))}
                                 </SelectContent>
                             </Select>
 
@@ -107,11 +108,11 @@ export const ShareModal = ({
                                     <SelectValue placeholder="Never expires" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="never">Never expires</SelectItem>
-                                    <SelectItem value="1">1 hour</SelectItem>
-                                    <SelectItem value="24">24 hours</SelectItem>
-                                    <SelectItem value="168">7 days</SelectItem>
-                                    <SelectItem value="720">30 days</SelectItem>
+                                    {EXPIRY_OPTIONS.map((option) => (
+                                        <SelectItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </SelectItem>
+                                    ))}
                                 </SelectContent>
                             </Select>
                         </div>

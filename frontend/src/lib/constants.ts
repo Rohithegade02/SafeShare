@@ -3,15 +3,12 @@ export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 export const API_TIMEOUT = 30000; // 30 seconds
 
 export const API_ENDPOINTS = {
-    // Auth
     AUTH: {
         REGISTER: '/api/auth/register',
         LOGIN: '/api/auth/login',
         PROFILE: '/api/auth/profile',
         USERS: '/api/auth/users',
     },
-
-    // Files
     FILES: {
         UPLOAD: '/api/files/upload',
         UPLOAD_BULK: '/api/files/upload/bulk',
@@ -20,8 +17,6 @@ export const API_ENDPOINTS = {
         DOWNLOAD: (id: string) => `/api/files/${id}/download`,
         DELETE: (id: string) => `/api/files/${id}`,
     },
-
-    // Share
     SHARE: {
         WITH_USERS: '/api/share/users',
         GENERATE_LINK: '/api/share/link',
@@ -31,16 +26,11 @@ export const API_ENDPOINTS = {
         REVOKE: '/api/share/revoke',
         DELETE: (fileId: string) => `/api/share/file/${fileId}`,
     },
-
-    // Audit (Bonus Feature)
     AUDIT: {
         MY_ACTIVITY: '/api/audit/my-activity',
         FILE_ACTIVITY: (fileId: string) => `/api/audit/file/${fileId}`,
         STATS: '/api/audit/stats',
     },
-
-    // Health
-    HEALTH: '/health',
 } as const;
 
 /**
@@ -81,45 +71,3 @@ export const EXPIRY_OPTIONS = [
     { label: '7 days', value: '168' },
     { label: '30 days', value: '720' },
 ] as const;
-
-/**
- * Activity Action Labels
- */
-export const ACTIVITY_LABELS = {
-    FILE_UPLOAD: 'uploaded',
-    FILE_DOWNLOAD: 'downloaded',
-    FILE_DELETE: 'deleted',
-    SHARE_CREATE: 'shared',
-    SHARE_ACCESS: 'accessed',
-    SHARE_REVOKE: 'revoked access to',
-} as const;
-
-/**
- * Routes
- */
-export const ROUTES = {
-    HOME: '/',
-    LOGIN: '/login',
-    REGISTER: '/register',
-    DASHBOARD: '/dashboard',
-    FILES: '/files',
-    FILE_DETAILS: (id: string) => `/files/${id}`,
-    SHARED: '/shared',
-    ACTIVITY: '/activity',
-    PROFILE: '/profile',
-    SETTINGS: '/settings',
-} as const;
-
-/**
- * Query Keys for React Query
- */
-export const QUERY_KEYS = {
-    USER: 'user',
-    FILES: 'files',
-    FILE: 'file',
-    SHARED_FILES: 'shared-files',
-    USERS: 'users',
-    ACTIVITY: 'activity',
-    ACTIVITY_STATS: 'activity-stats',
-    FILE_ACTIVITY: 'file-activity',
-} as const;

@@ -13,10 +13,8 @@ import type { SharedFile } from '@/types/file.types';
  * Custom hook for file sharing operations
  */
 export const useShare = () => {
-    // Use local state for shared files to avoid Zustand reactivity issues with React 19
     const [localSharedFiles, setLocalSharedFiles] = useState<SharedFile[]>([]);
 
-    // Use a single selector to get all state at once
     const store = useShareStore();
 
     const {
@@ -77,14 +75,13 @@ export const useShare = () => {
         try {
             const shares = await shareService.getSharedFiles();
 
-            // Create SharedFile objects with both file data and share metadata
             const sharedFiles: SharedFile[] = shares
                 .map((share) => {
                     if (typeof share.file === 'object' && share.file !== null) {
                         return {
                             ...share.file,
-                            sharedAt: share.createdAt, // When it was shared
-                            shareId: share.id, // Share document ID
+                            sharedAt: share.createdAt,
+                            shareId: share.id,
                         };
                     }
                     return null;
@@ -175,14 +172,11 @@ export const useShare = () => {
     }, [setCurrentFileShares]);
 
     return {
-        // State
-        localSharedFiles, // Use local state
+        localSharedFiles,
         sharedFilesLoading,
         sharedFilesError,
         currentFileShares,
         currentSharesLoading,
-
-        // Actions
         shareWithUsers,
         generateShareLink,
         fetchSharedFiles,

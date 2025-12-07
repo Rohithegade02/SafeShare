@@ -9,7 +9,7 @@ import {
 } from '@/components/atoms/dropdown-menu';
 import type { FileCardProps } from './types';
 import { FileIcon, Download, Share2, Trash2, MoreVertical, Archive, Eye } from 'lucide-react';
-import { formatFileSize, formatDate, getFileExtension, formatRelativeTime } from '@/utils/formatters';
+import { formatFileSize, getFileExtension, formatRelativeTime } from '@/utils/formatters';
 import { getFileTypeColor } from '@/utils/activity-helpers';
 import { useMemo, memo, Activity } from 'react';
 

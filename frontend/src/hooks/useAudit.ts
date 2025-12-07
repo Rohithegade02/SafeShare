@@ -87,7 +87,6 @@ export const useAudit = () => {
     }, [setStats, setStatsLoading, setStatsError]);
 
     return {
-        // State
         myActivity,
         fileActivity,
         stats,
@@ -97,8 +96,6 @@ export const useAudit = () => {
         myActivityError,
         fileActivityError,
         statsError,
-
-        // Actions
         fetchMyActivity,
         fetchFileActivity,
         fetchStats,

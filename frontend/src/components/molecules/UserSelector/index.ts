@@ -1,2 +1,2 @@
 export { UserSelector } from './UserSelector';
-export type { UserSelectorProps, User } from './types';
+export type { UserSelectorProps } from './types';
