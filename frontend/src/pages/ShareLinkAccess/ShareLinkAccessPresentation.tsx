@@ -1,63 +1,21 @@
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useShare } from '@/hooks/useShare';
-import { useFiles } from '@/hooks/useFiles';
+import { memo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/atoms/card';
 import { Button } from '@/components/atoms/button';
 import { Download, FileIcon, Loader2, AlertCircle } from 'lucide-react';
 import { formatFileSize, formatDate } from '@/utils/formatters';
+import type { ShareLinkAccessPresentationProps } from './types';
 
 /**
- * ShareLinkAccess - Access a file via share link
+ * ShareLinkAccessPresentation - UI for accessing a file via share link
  */
-export const ShareLinkAccess = () => {
-    const { shareLink } = useParams<{ shareLink: string }>();
-    const navigate = useNavigate();
-    const { accessByLink } = useShare();
-    const { downloadFile } = useFiles();
-
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const [fileData, setFileData] = useState<any>(null);
-
-    useEffect(() => {
-        const loadFile = async () => {
-            if (!shareLink) {
-                setError('Invalid share link');
-                setLoading(false);
-                return;
-            }
-
-            try {
-                setLoading(true);
-                const share = await accessByLink(shareLink);
-
-                // Extract file from share
-                if (share && typeof share.file === 'object') {
-                    setFileData(share.file);
-                } else {
-                    setError('File not found or access denied');
-                }
-            } catch (err) {
-                setError(err instanceof Error ? err.message : 'Failed to access file');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        loadFile();
-    }, [shareLink, accessByLink]);
-
-    const handleDownload = async () => {
-        if (fileData) {
-            try {
-                await downloadFile(fileData._id, fileData.originalName);
-            } catch (error) {
-                console.error('Download failed:', error);
-            }
-        }
-    };
-
+export const ShareLinkAccessPresentation = memo(({
+    loading,
+    error,
+    fileData,
+    onDownload,
+    onGoToDashboard,
+}: ShareLinkAccessPresentationProps) => {
+    // Loading state
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-background">
@@ -73,10 +31,11 @@ export const ShareLinkAccess = () => {
         );
     }
 
+    // Error state
     if (error || !fileData) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-background">
-                <Card className="w-full  max-w-md">
+                <Card className="w-full max-w-md">
                     <CardHeader>
                         <CardTitle className="flex justify-center items-center gap-2 text-destructive">
                             <AlertCircle className="h-5 w-5" />
@@ -87,12 +46,20 @@ export const ShareLinkAccess = () => {
                         <p className="text-sm text-center text-muted-foreground mb-4">
                             {error || 'Unable to access this file. The link may be invalid or expired.'}
                         </p>
+                        <Button
+                            variant="outline"
+                            onClick={onGoToDashboard}
+                            className="w-full"
+                        >
+                            Go to Dashboard
+                        </Button>
                     </CardContent>
                 </Card>
             </div>
         );
     }
 
+    // Success state - show file details
     return (
         <div className="min-h-screen flex items-center justify-center bg-background p-4">
             <Card className="w-full max-w-2xl">
@@ -100,6 +67,7 @@ export const ShareLinkAccess = () => {
                     <CardTitle>Shared File</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
+                    {/* File Info */}
                     <div className="flex items-start gap-4 p-4 rounded-lg border bg-muted/50">
                         <div className="p-3 rounded-lg bg-background">
                             <FileIcon className="h-8 w-8 text-muted-foreground" />
@@ -114,16 +82,18 @@ export const ShareLinkAccess = () => {
                         </div>
                     </div>
 
+                    {/* Action Buttons */}
                     <div className="flex gap-3">
-                        <Button onClick={handleDownload} className="flex-1">
+                        <Button onClick={onDownload} className="flex-1">
                             <Download className="mr-2 h-4 w-4" />
                             Download File
                         </Button>
-                        <Button variant="outline" onClick={() => navigate('/dashboard')}>
+                        <Button variant="outline" onClick={onGoToDashboard}>
                             Go to Dashboard
                         </Button>
                     </div>
 
+                    {/* Security Notice */}
                     <div className="p-4 rounded-lg bg-muted/30 border border-muted">
                         <p className="text-xs text-muted-foreground">
                             🔒 This file has been securely shared with you. Only authenticated users can access shared files.
@@ -133,4 +103,6 @@ export const ShareLinkAccess = () => {
             </Card>
         </div>
     );
-};
+});
+
+ShareLinkAccessPresentation.displayName = 'ShareLinkAccessPresentation';

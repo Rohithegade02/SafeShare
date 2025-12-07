@@ -1,1 +1,1 @@
-export { ShareLinkAccess } from './ShareLinkAccess';
+export { ShareLinkAccessContainer as ShareLinkAccess } from './ShareLinkAccessContainer';
