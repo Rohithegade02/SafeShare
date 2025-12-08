@@ -299,25 +299,7 @@ npm run build
 yarn build
 ```
 
-### Preview Production Build
 
-```bash
-npm run preview
-# or
-yarn preview
-```
-
-## 📦 Key Features
-
-- ✅ **File Upload/Download** - Secure file management
-- ✅ **File Sharing** - Share with users or generate links
-- ✅ **Activity Tracking** - Audit logs and statistics
-- ✅ **Authentication** - JWT-based auth with auto-refresh
-- ✅ **Dark Mode** - Theme switching support
-- ✅ **Responsive Design** - Mobile-first approach
-- ✅ **Type Safety** - Full TypeScript coverage
-- ✅ **Error Handling** - Comprehensive error management
-- ✅ **Loading States** - Skeleton loaders and spinners
 
 ## 🧪 Code Quality
 
