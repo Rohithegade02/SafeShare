@@ -4,7 +4,7 @@ import { AppError } from '../../../common/middleware/error.middleware';
 // Use memory storage instead of disk storage for GridFS
 const storage = multer.memoryStorage();
 
-const fileFilter = (req: any, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
+const fileFilter = (_req: Express.Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
     // Allowed file types
     const allowedTypes = [
         'application/pdf',

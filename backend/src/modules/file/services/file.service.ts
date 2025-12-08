@@ -5,7 +5,6 @@ import { DatabaseConfig } from '../../../config/database.config';
 import { Readable } from 'stream';
 import zlib from 'zlib';
 import { promisify } from 'util';
-import mongoose from 'mongoose';
 
 const gzip = promisify(zlib.gzip);
 const gunzip = promisify(zlib.gunzip);

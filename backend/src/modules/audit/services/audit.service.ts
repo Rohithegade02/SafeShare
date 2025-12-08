@@ -11,15 +11,20 @@ export class AuditService {
         ipAddress?: string,
         userAgent?: string
     ): Promise<IAuditLog> {
-        const log = await AuditLog.create({
+        // Build the log object conditionally to avoid passing undefined to optional properties
+        // This is required when exactOptionalPropertyTypes is enabled in tsconfig
+        const logData: any = {
             user: userId,
             action,
-            file: fileId,
-            targetUser: targetUserId,
-            metadata,
-            ipAddress,
-            userAgent,
-        });
+        };
+
+        if (fileId) logData.file = fileId;
+        if (targetUserId) logData.targetUser = targetUserId;
+        if (metadata) logData.metadata = metadata;
+        if (ipAddress) logData.ipAddress = ipAddress;
+        if (userAgent) logData.userAgent = userAgent;
+
+        const log = (await AuditLog.create(logData)) as unknown as IAuditLog;
 
         return log;
     }
@@ -30,9 +35,10 @@ export class AuditService {
             .limit(limit)
             .populate('user', 'username email')
             .populate('file', 'filename originalName')
-            .populate('targetUser', 'username email');
+            .populate('targetUser', 'username email')
+            .exec();
 
-        return logs;
+        return logs as IAuditLog[];
     }
 
     async getFileActivityLog(fileId: string, limit: number = 50): Promise<IAuditLog[]> {
@@ -40,9 +46,10 @@ export class AuditService {
             .sort({ createdAt: -1 })
             .limit(limit)
             .populate('user', 'username email')
-            .populate('targetUser', 'username email');
+            .populate('targetUser', 'username email')
+            .exec();
 
-        return logs;
+        return logs as IAuditLog[];
     }
 
     async getActivityStats(userId: string): Promise<any> {

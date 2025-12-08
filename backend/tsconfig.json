@@ -5,6 +5,11 @@
         "outDir": "./dist",
         "rootDir": "./src",
         "strict": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "exactOptionalPropertyTypes": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
@@ -17,9 +22,5 @@
     ],
     "exclude": [
         "node_modules"
-    ],
-    "ts-node": {
-        "transpileOnly": true,
-        "files": true
-    }
+    ]
 }

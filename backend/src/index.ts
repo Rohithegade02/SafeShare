@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from 'express';
+import express, { Application, type NextFunction, type Request, type Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { DatabaseConfig } from './config/database.config';
@@ -33,15 +33,15 @@ class App {
         );
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
-        this.app.use((req, res, next) => {
-            console.log(`${req.method} ${req.path}`);
+        this.app.use((req: Request, res: Response, next: NextFunction) => {
+            console.log(`${req.method} ${res.statusCode} ${req.path}`);
             next();
         });
     }
 
     private initializeRoutes(): void {
         // Health check
-        this.app.get('/health', (req: Request, res: Response) => {
+        this.app.get('/health', (res: Response) => {
             res.status(200).json({
                 success: true,
                 message: 'SafeShare API is running',
@@ -56,7 +56,7 @@ class App {
         this.app.use('/api/audit', AuditModule.getRouter());
 
         // 404 handler
-        this.app.use((req: Request, res: Response) => {
+        this.app.use((res: Response) => {
             res.status(404).json({
                 success: false,
                 message: 'Route not found',

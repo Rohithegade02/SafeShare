@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { AuthProvider } from '../providers/auth.provider';
 import { asyncHandler } from '../../../common/middleware/error.middleware';
 import { AuthRequest } from '../../../common/interfaces/request.interface';
@@ -37,7 +37,7 @@ export class AuthController {
         });
     });
 
-    getAllUsers = asyncHandler(async (req: AuthRequest, res: Response) => {
+    getAllUsers = asyncHandler(async (res: Response) => {
         const users = await this.authService.getAllUsers();
 
         res.status(200).json({

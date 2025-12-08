@@ -43,7 +43,7 @@ export class ShareService {
                 owner: ownerId,
                 sharedWith: userIds.map(id => new mongoose.Types.ObjectId(id)),
                 shareLink,
-                expiresAt,
+                ...(expiresAt && { expiresAt }),
             });
         }
 
@@ -82,7 +82,7 @@ export class ShareService {
             owner: ownerId,
             sharedWith: [],
             shareLink,
-            expiresAt,
+            ...(expiresAt && { expiresAt }),
         });
 
         return share;
@@ -123,7 +123,7 @@ export class ShareService {
         return share;
     }
 
-    async accessFileByLink(shareLink: string, userId: string): Promise<any> {
+    async accessFileByLink(shareLink: string): Promise<any> {
         const share = await Share.findOne({ shareLink }).populate('file');
 
         if (!share) {

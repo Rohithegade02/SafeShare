@@ -1,11 +1,11 @@
-import { Request, Response, NextFunction } from 'express';
+import { type NextFunction, type Response } from 'express';
 import { AuthRequest } from '../../../common/interfaces/request.interface';
 import { AuthProvider } from '../providers/auth.provider';
 import { AppError } from '../../../common/middleware/error.middleware';
 
 export const authMiddleware = async (
     req: AuthRequest,
-    res: Response,
+    _res: Response,
     next: NextFunction
 ) => {
     try {

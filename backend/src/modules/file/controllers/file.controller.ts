@@ -31,7 +31,7 @@ export class FileController {
             req.get('user-agent')
         );
 
-        res.status(201).json({
+        return res.status(201).json({
             success: true,
             data: file,
         });
@@ -63,7 +63,7 @@ export class FileController {
             )
         );
 
-        res.status(201).json({
+        return res.status(201).json({
             success: true,
             data: files,
         });

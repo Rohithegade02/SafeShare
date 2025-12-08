@@ -89,7 +89,7 @@ export class ShareController {
     accessByLink = asyncHandler(async (req: AuthRequest, res: Response) => {
         const { shareLink } = req.params;
 
-        const share = await this.shareService.accessFileByLink(shareLink, req.user!.id);
+        const share = await this.shareService.accessFileByLink(shareLink);
 
         // Log audit activity
         await this.auditService.logActivity(
