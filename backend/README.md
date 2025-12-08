@@ -2,7 +2,7 @@
 
 A full-stack file sharing application backend built with **Express + TypeScript** following **NestJS-like microservice architecture** with **MongoDB**.
 
-## 🏗️ Architecture
+##  Architecture
 
 This project follows a **microservice architecture pattern** with clean separation of concerns:
 
@@ -73,7 +73,7 @@ backend/
 └── tsconfig.json
 ```
 
-## 🚀 Features
+##  Features
 
 ### Core Features
 1. **File Upload**
@@ -98,7 +98,7 @@ backend/
    - Track share creation and access
    - Activity statistics per user
 
-## 📦 Tech Stack
+##  Tech Stack
 
 - **Runtime**: Node.js
 - **Framework**: Express.js
@@ -109,7 +109,7 @@ backend/
 - **Password Hashing**: bcryptjs
 - **File Compression**: zlib (Node.js built-in)
 
-## 🛠️ Setup
+##  Setup
 
 ### Prerequisites
 - Node.js (v16+)
@@ -154,7 +154,7 @@ backend/
    npm start
    ```
 
-## 📡 API Endpoints
+##  API Endpoints
 
 ### Auth Service (`/api/auth`)
 - `POST /api/auth/register` - Register new user
@@ -184,7 +184,7 @@ backend/
 - `GET /api/audit/file/:fileId` - Get file activity log (protected)
 - `GET /api/audit/stats` - Get activity statistics (protected)
 
-## 🔒 Security Features
+##  Security Features
 
 1. **Authentication**: JWT-based authentication with secure token generation
 2. **Authorization**: Middleware to protect routes and verify ownership
@@ -193,13 +193,13 @@ backend/
 5. **Password Security**: bcrypt hashing with salt rounds
 6. **CORS**: Configured for specific origins
 
-## 🎯 Bonus Features Implemented
+##  Bonus Features Implemented
 
 1.  **Link Expiry**: Set expiration time for shares
 2.  **Audit Log**: Track all file and share activities
 3.  **File Compression**: Store files in compressed format (gzip)
 
-## 🧪 Testing
+##  Testing
 
 Use tools like **Postman** or **Thunder Client** to test the API endpoints.
 
@@ -225,7 +225,7 @@ file: <select file>
 compress: true
 ```
 
-## 📝 Notes
+##  Notes
 
 - The backend uses a **NestJS-like structure** with Express for better organization
 - Each microservice has its own **module, controller, service, and provider**
@@ -233,10 +233,3 @@ compress: true
 - All routes are properly typed with TypeScript
 - Error handling is centralized via middleware
 
-## 🤝 Contributing
-
-This is a demonstration project for a file-sharing application with microservice architecture.
-
-## 📄 License
-
-MIT
