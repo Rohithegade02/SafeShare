@@ -14,15 +14,6 @@ export const DashboardContent = memo(({
 }: DashboardContentProps) => {
     return (
         <main className="container px-4 py-6">
-            <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-4">
-                    <UploadButton
-                        onUpload={onFileUpload}
-                        multiple={true}
-                        disabled={isUploading}
-                    />
-                </div>
-            </div>
             <FileList
                 files={files}
                 loading={isLoading}

@@ -28,3 +28,8 @@ export interface DashboardContentProps {
     onFileShare: (fileId: string) => void;
     onFileView: (fileId: string) => void;
 }
+
+export interface DashboardSideBarProps {
+    onFileUpload: (files: globalThis.File[], compress: boolean) => Promise<void>;
+    isUploading: boolean;
+}

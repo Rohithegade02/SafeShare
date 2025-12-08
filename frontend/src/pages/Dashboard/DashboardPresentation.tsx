@@ -2,6 +2,7 @@ import { memo } from 'react';
 import { Header } from '../../components/molecules';
 import type { DashboardPresentationProps } from './types';
 import { DashboardContent } from './components/DashboardContent';
+import { DashboardSideBar } from './components/DashboardSideBar';
 
 
 /**
@@ -32,16 +33,21 @@ export const DashboardPresentation = memo(({
                 isLoading={isLoading}
                 onLogout={onLogout}
             />
-            <DashboardContent
-                files={files}
-                isLoading={isLoading}
-                isUploading={isUploading}
-                onFileUpload={onFileUpload}
-                onFileDownload={onFileDownload}
-                onFileDelete={onFileDelete}
-                onFileShare={onFileShare}
-                onFileView={onFileView}
-            />
+            <main className='flex h-screen flex-1'>
+                <DashboardSideBar onFileUpload={onFileUpload} isUploading={isUploading} />
+                <div className="border-l  border-gray-200 flex-[0.85]">
+                    <DashboardContent
+                        files={files}
+                        isLoading={isLoading}
+                        isUploading={isUploading}
+                        onFileUpload={onFileUpload}
+                        onFileDownload={onFileDownload}
+                        onFileDelete={onFileDelete}
+                        onFileShare={onFileShare}
+                        onFileView={onFileView}
+                    />
+                </div>
+            </main>
         </div>
     );
 });

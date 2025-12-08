@@ -32,7 +32,7 @@ export const UploadButton = memo(({
             <DialogTrigger asChild>
                 <Button disabled={disabled} className="gap-2">
                     <Upload className="h-4 w-4" />
-                    {multiple ? 'Upload Files' : 'Upload File'}
+                    New
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
