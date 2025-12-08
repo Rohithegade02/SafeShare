@@ -37,10 +37,10 @@ export class AuthController {
         });
     });
 
-    getAllUsers = asyncHandler(async (res: Response) => {
+    getAllUsers = asyncHandler(async (_req: AuthRequest, res: Response) => {
         const users = await this.authService.getAllUsers();
 
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             data: users,
         });
