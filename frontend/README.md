@@ -276,7 +276,7 @@ yarn install
 Create a `.env.local` file:
 
 ```env
-VITE_API_URL=http://localhost:5000/api
+VITE_API_URL=https://safeshare-1.onrender.com
 ```
 
 ### Development

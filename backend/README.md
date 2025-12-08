@@ -135,7 +135,7 @@ backend/
    JWT_EXPIRES_IN=7d
    MAX_FILE_SIZE=52428800
    UPLOAD_PATH=./uploads
-   CORS_ORIGIN=http://localhost:5173
+   CORS_ORIGIN=https://safe-share-roan.vercel.app
    ```
 
 3. **Start MongoDB** (if running locally):
@@ -199,31 +199,6 @@ backend/
 2.  **Audit Log**: Track all file and share activities
 3.  **File Compression**: Store files in compressed format (gzip)
 
-##  Testing
-
-Use tools like **Postman** or **Thunder Client** to test the API endpoints.
-
-### Example: Register User
-```bash
-POST http://localhost:3000/api/auth/register
-Content-Type: application/json
-
-{
-  "username": "john_doe",
-  "email": "john@example.com",
-  "password": "password123"
-}
-```
-
-### Example: Upload File
-```bash
-POST http://localhost:3000/api/files/upload
-Authorization: Bearer <your-jwt-token>
-Content-Type: multipart/form-data
-
-file: <select file>
-compress: true
-```
 
 ##  Notes
 
