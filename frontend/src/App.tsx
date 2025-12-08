@@ -54,9 +54,9 @@ function App() {
           <Route
             path={ROUTES.shareLink}
             element={
-              <ProtectedRoute>
-                <ShareLinkAccess />
-              </ProtectedRoute>
+              // <ProtectedRoute>
+              <ShareLinkAccess />
+              // </ProtectedRoute>
             }
           />
           <Route
