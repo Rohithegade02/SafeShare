@@ -1,4 +1,4 @@
-import type { Activity } from '@/services/audit.service';
+import type { Activity } from '@/types/audit.types';
 
 export interface ActivityItemProps {
     activity: Activity;

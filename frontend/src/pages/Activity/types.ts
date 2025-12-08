@@ -1,4 +1,4 @@
-import type { Activity, ActivityStats } from '@/services/audit.service';
+import type { Activity, ActivityStats } from '@/types/audit.types';
 import type { User } from '@/types';
 
 export interface ActivityContainerProps { }

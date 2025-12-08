@@ -1,12 +1,12 @@
-import { FileList, UploadButton } from "@/components/molecules";
+import { FileList } from "@/components/molecules";
 import type { DashboardContentProps } from "../types";
 import { memo } from "react";
 
 export const DashboardContent = memo(({
     files,
     isLoading,
-    isUploading,
-    onFileUpload,
+    // isUploading,
+    // onFileUpload,
     onFileDownload,
     onFileDelete,
     onFileShare,
