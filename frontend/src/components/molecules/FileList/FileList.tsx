@@ -15,9 +15,9 @@ export const FileList = memo(({
 }: FileListProps) => {
     if (loading) {
         return (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="flex flex-wrap gap-4">
                 {[...Array(6)].map((_, i) => (
-                    <div key={i} className="space-y-3">
+                    <div key={i} className="space-y-3 w-[calc(33.333%-1rem)] min-w-[300px]">
                         <Skeleton className="h-[200px] w-full rounded-lg" />
                     </div>
                 ))}
@@ -36,7 +36,7 @@ export const FileList = memo(({
     }
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="flex flex-wrap gap-4">
             {files.map((file) => (
                 <FileCard
                     key={file._id}

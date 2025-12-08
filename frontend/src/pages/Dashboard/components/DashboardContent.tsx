@@ -13,7 +13,7 @@ export const DashboardContent = memo(({
     onFileView,
 }: DashboardContentProps) => {
     return (
-        <main className="container px-4 py-6">
+        <main className="flex gap-4 flex-wrap  px-4 py-6">
             <FileList
                 files={files}
                 loading={isLoading}

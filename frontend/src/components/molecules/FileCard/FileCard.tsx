@@ -49,7 +49,7 @@ export const FileCard = memo(({
         ]
     }, [onView, onDownload, onShare, onDelete, file._id])
     return (
-        <Card className="hover:shadow-lg transition-shadow duration-200">
+        <Card className="hover:shadow-lg w-[36vw] transition-shadow duration-200">
             <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3 flex-1 min-w-0">

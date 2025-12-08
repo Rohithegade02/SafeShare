@@ -24,7 +24,7 @@ export const DashboardPresentation = memo(({
     onLogout,
 }: DashboardPresentationProps) => {
     return (
-        <div className="min-h-screen bg-background">
+        <div className="min-h-screen  bg-background">
             <Header
                 user={user}
                 searchQuery={searchQuery}
@@ -33,9 +33,10 @@ export const DashboardPresentation = memo(({
                 isLoading={isLoading}
                 onLogout={onLogout}
             />
-            <main className='flex h-screen flex-1'>
+            <main className='flex max-w-[100vw] h-screen flex-1'>
                 <DashboardSideBar onFileUpload={onFileUpload} isUploading={isUploading} />
-                <div className="border-l  border-gray-200 flex-[0.85]">
+                <div className="border-l flex flex-col  border-gray-200 flex-[0.85]">
+                    <p className="text-2xl font-bold p-4">All Files</p>
                     <DashboardContent
                         files={files}
                         isLoading={isLoading}

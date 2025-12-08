@@ -65,7 +65,7 @@ export const FILE_CONFIG = {
  * Link Expiry Options (Bonus Feature)
  */
 export const EXPIRY_OPTIONS = [
-    { label: 'Never expires', value: '' },
+    { label: 'Never expires', value: 'never' },
     { label: '1 hour', value: '1' },
     { label: '24 hours', value: '24' },
     { label: '7 days', value: '168' },
