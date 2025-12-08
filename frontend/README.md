@@ -141,31 +141,7 @@ Page/
 - No state management (except local UI state)
 - Fully testable and reusable
 
-**Example: `DashboardPresentation.tsx`**
-```typescript
-interface DashboardPresentationProps {
-  files: File[];
-  isLoading: boolean;
-  onFileUpload: (file: File) => void;
-  onFileDelete: (id: string) => void;
-}
 
-export const DashboardPresentation = ({
-  files,
-  isLoading,
-  onFileUpload,
-  onFileDelete,
-}: DashboardPresentationProps) => {
-  return (
-    <div>
-      <FileList 
-        files={files} 
-        onDelete={onFileDelete} 
-      />
-    </div>
-  );
-};
-```
 
 ### Benefits
 
@@ -371,31 +347,7 @@ yarn preview
 - **Stores**: camelCase with `Store` suffix (`authStore.ts`)
 - **Types**: camelCase with `.types` suffix (`auth.types.ts`)
 
-### Component Structure
-```typescript
-// 1. Imports
-import { useState } from 'react';
-import type { Props } from './types';
 
-// 2. Types/Interfaces
-interface ComponentProps {
-  // ...
-}
-
-// 3. Component
-export const Component = ({ prop }: ComponentProps) => {
-  // 3a. Hooks
-  const [state, setState] = useState();
-  
-  // 3b. Handlers
-  const handleClick = () => {
-    // ...
-  };
-  
-  // 3c. Render
-  return <div>...</div>;
-};
-```
 
 ## 🔧 Configuration Files
 
