@@ -5,7 +5,8 @@ import path from 'path';
 
 let bucket: GridFSBucket;
 dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
-console.log(process.env.MONGODB_URI);
+
+
 export class DatabaseConfig {
     static async connect(): Promise<void> {
         try {
